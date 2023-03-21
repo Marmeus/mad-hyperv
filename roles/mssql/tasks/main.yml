@@ -1,41 +1,109 @@
 ---
-# Load required powershell modules
-- name: Powershell | Check for SQLServer DSC Powershell module
-  win_psmodule:
-    name: SQLServerDsc
-    state: present
-    accept_license: true
+  - name: MSSQL | create a directory for the setup 
+    win_file: 
+      path: c:\setup
+      state: directory
 
-- name: Powershell | Check for Storage DSC Powershell module
-  win_psmodule:
-    name: StorageDsc
-    state: present
-    accept_license: true
+  - name: MSSQL | create a directory for setting up MSSQL
+    win_file: 
+      path: c:\setup\mssql
+      state: directory
 
-- name: Powershell | Check for ServerManager Powershell module
-  win_psmodule:
-    name: ServerManager
-    state: present
-    accept_license: true
+  - name: MSSQL | create a directory for MSSQL media extraction
+    win_file: 
+      path: c:\setup\mssql\media
+      state: directory
 
-- name: Powershell | Ensure that DBA Tools module is present
-  win_psmodule:
-    name: dbatools
-    state: present
-    accept_license: true
+  - name: MSSQL | Upload MSSQL Installer
+    ansible.windows.win_copy:
+      src: "files/SQL2019-SSEI-Expr.exe"
+      dest: "c:\\setup\\mssql\\sql_installer.exe"
 
-- name: Powershell | Check for xNetworking Powershell module
-  win_psmodule:
-    name: xNetworking
-    state: present
-    accept_license: true
-  register: powershell_modules
+  - name: MSSQL | Upload MSSQL configuration file
+    win_template: 
+      src: files/sql_conf.ini.j2
+      dest: c:\setup\mssql\sql_conf.ini
 
-- include: pre_reqs.yml
-  when: powershell_modules.changed
+  - name: MSSQL | Install the database
+    win_command: c:\setup\mssql\sql_installer.exe /configurationfile=c:\setup\mssql\sql_conf.ini /IACCEPTSQLSERVERLICENSETERMS /MEDIAPATH=c:\setup\mssql\media /QUIET /HIDEPROGRESSBAR
+    args:
+      chdir: c:\setup
+    vars:
+      ansible_become: yes
+      ansible_become_method: runas
+      ansible_become_user: "vagrant"
+      ansible_become_password: "vagrant"
+    register: mssqlinstall
+    until: "mssqlinstall is not failed"
+    retries: 1
+    delay: 120
 
-- include: accounts.yml
-- include: prepare_install.yml
-- include: install.yml
-- include: firewall.yml
-- include: configure.yml
+  - name: MSSQL | Add or update registry for MSSQL listening port
+    win_regedit:
+      path: 'HKLM:\Software\Microsoft\Microsoft SQL Server\MSSQL15.SQLEXPRESS\MSSQLServer\SuperSocketNetLib\Tcp\IPAll'
+      name: TcpPort
+      data: 1433
+    register: win_reg
+
+  - name: MSSQL | Restart a service
+    win_service:
+      name: 'MSSQL$SQLEXPRESS'
+      force_dependent_services: yes
+      state: restarted
+    when: win_reg.changed
+
+  # - name: MSSQL | Allow xp_cmdshell
+  #   win_shell: |
+  #     SqlCmd -E -Q "EXEC sp_configure 'show advanced options', 1; RECONFIGURE; EXEC sp_configure 'xp_cmdshell', 1; RECONFIGURE;"
+  #   become: yes
+  #   become_method: runas
+  #   become_user: "vagrant"
+  #   vars:
+  #     ansible_become_pass: "vagrant"
+
+  - name: Firewall | Allow MSSQL through Firewall
+    win_firewall_rule:
+      name: Allow MSSQL through Firewall
+      localport: 1433
+      action: allow
+      direction: in
+      protocol: tcp
+      state: present
+      profile: "Domain"
+      enabled: yes
+      description: "Opens the listener port for MSSQL"
+
+  - name: Firewall | Allow MSSQL discover through Firewall
+    win_firewall_rule:
+      name: "Access for MSSQL (UDP-In)"
+      localport: 1434
+      action: allow
+      direction: in
+      protocol: udp
+      state: present
+      profile: "Domain"
+      enabled: yes
+      description: "Opens the discover port for MSSQL"
+
+  - name: SSMS | create a directory for setting up SSMS
+    win_file: 
+      path: c:\setup\ssms
+      state: directory
+
+  - name: SSMS | Download SSMS Installer
+    win_get_url:
+        url: 'https://aka.ms/ssmsfullsetup'
+        dest: 'c:\setup\mssql\SSMS_installer.exe'
+
+  - name: Install SSMS
+    win_command: c:\setup\ssms\SSMS_installer.exe /install /quiet /norestart
+    args:
+      chdir: c:\setup
+    until: "install_ssmss is not failed"
+    register: install_ssmss
+    retries: 1
+    delay: 120
+
+  - name: Reboot after install
+    win_reboot:
+      reboot_timeout: 600

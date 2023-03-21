@@ -12,6 +12,6 @@
     args:
       chdir: C:\Windows\System32\
   roles:
-    - role: disable_rtm
     - role: mssql
+    - role: disable_rtm
     - role: joindomain

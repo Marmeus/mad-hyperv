@@ -1,0 +1,17 @@
+---
+# Setup service accounts
+- name: Ensure user sa is present
+  win_user:
+    name: sa
+    password: Password1
+    state: present
+    groups:
+      - Administrators
+
+- name: Ensure user sqlagent is present
+  win_user:
+    name: sqlagent
+    password: Password2
+    state: present
+    groups:
+      - Administrators

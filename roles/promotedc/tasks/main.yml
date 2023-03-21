@@ -65,5 +65,4 @@
 
   - include_tasks: accounts.yml
   - include_tasks: vulnerable-AD.yml
-  - include_tasks: disable_rtm.yml
 
