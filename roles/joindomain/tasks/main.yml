@@ -3,7 +3,7 @@
   win_dns_client:
     adapter_names: "{{ ethernet_adapter }}"
     ipv4_addresses:
-      - <DC_IP>
+      - 172.28.216.36
       - 1.1.1.1
   register: dns_setup
 
@@ -15,26 +15,19 @@
 
 - include_tasks: firewall_3389.yml
 
+- name: Install ActiveDirectory Module
+  win_shell: "Add-WindowsFeature RSAT-AD-PowerShell"
+
 - name: Join the capsulecorp.local domain
   win_domain_membership:
     dns_domain_name: capsulecorp.local
-    hostname: "{{ capsulecorp_domain_hostname }}"
-    domain_admin_user: goku@capsulecorp.local
+    domain_admin_user: Administrator@capsulecorp.local
     domain_admin_password: PassW0rd432!
     state: domain
   register: domain_state
 
-- name: Install ActiveDirectory Module
-  win_shell: "Add-WindowsFeature RSAT-AD-PowerShell"
-
-- name: Reboot the server
-  raw: shutdown /r
-
-- name: Wait for the host to come back up
-  local_action:
-    module: wait_for
-    host: "{{ ansible_host }}"
-    port: 5985
-    delay: 10
-    state: started
-  register: wait_result
+- name: Reboot if needed
+  win_reboot:    
+    reboot_timeout: 1500
+    post_reboot_delay: 100
+  when: domain_state.reboot_required

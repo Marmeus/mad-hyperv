@@ -93,7 +93,7 @@
   - name: SSMS | Download SSMS Installer
     win_get_url:
         url: 'https://aka.ms/ssmsfullsetup'
-        dest: 'c:\setup\mssql\SSMS_installer.exe'
+        dest: 'c:\setup\ssms\SSMS_installer.exe'
 
   - name: Install SSMS
     win_command: c:\setup\ssms\SSMS_installer.exe /install /quiet /norestart

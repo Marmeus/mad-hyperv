@@ -1,30 +1,56 @@
 ---
+  # - name: Ensure AD account GohanADM exists
+  #   win_domain_user:
+  #     name: gohan.adm
+  #     firstname: GohanADM
+  #     password: PassW0rd876#!
+  #     state: present
+  #     groups:
+  #       - Domain Users
+  #     spn:
+  #     - SQL_SVC/gohan:1433
+
+  # - name: Ensure AD account Vegetaadm exists
+  #   win_domain_user:
+  #     name: vegeta.adm
+  #     firstname: VegetaADM
+  #     password: PassW0rd765#!
+  #     state: present
+  #     groups:
+  #       - Domain Users
+
+  # - name: Ensure AD account TrunksADM exists
+  #   win_domain_user:
+  #     name: trunks.adm
+  #     firstname: TrunksADM
+  #     password: PassW0rd654#!
+  #     state: present
+  #     groups:
+  #       - Domain Users
+
   - name: Ensure AD account GohanADM exists
     win_domain_user:
-      name: gohan.adm
-      firstname: GohanADM
-      password: PassW0rd876#!
+      name: sql_svc
+      firstname: sql_svc
+      password: PassW0rd@MSSQL
       state: present
       groups:
         - Domain Users
+      spn:
+        - "MSSQLSvc/gohan.capsulecorp.local:1433"
+        - "MSSQLSvc/gohan.capsulecorp.local"
 
-  - name: Ensure AD account Vegetaadm exists
+  - name: Ensure AD account GohanADM exists
     win_domain_user:
-      name: vegeta.adm
-      firstname: VegetaADM
-      password: PassW0rd765#!
+      name: iis_svc
+      firstname: iis_svc
+      password: PassW0rd@IIS
       state: present
       groups:
         - Domain Users
-
-  - name: Ensure AD account TrunksADM exists
-    win_domain_user:
-      name: trunks.adm
-      firstname: TrunksADM
-      password: PassW0rd654#!
-      state: present
-      groups:
-        - Domain Users
+      spn:
+        - "IISSvc/raditz.capsulecorp.local:1433"
+        - "IISLSvc/raditz.capsulecorp.local"
 
   - name: Ensure AD account serveradmin exists
     win_domain_user:
