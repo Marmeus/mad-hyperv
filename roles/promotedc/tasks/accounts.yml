@@ -1,5 +1,5 @@
 ---
-  - name: Ensure AD account sql_svc exists
+  - name: ACCOUNTS | Ensure AD account sql_svc exists
     community.windows.win_domain_user:
       name: sql_svc
       firstname: sql_svc
@@ -11,13 +11,13 @@
         - "MSSQLSvc/gohan.capsulecorp.local:1433"
         - "MSSQLSvc/gohan.capsulecorp.local"
 
-  - name: Add TrustedToAuthForDelegation to SQL_SVC 
+  - name: ACCOUNTS | Add TrustedToAuthForDelegation to SQL_SVC 
     win_shell: Set-ADAccountControl -Identity 'sql_svc' -TrustedToAuthForDelegation $True
 
-  - name: Add msDS-AllowedToDelegateTo to SQL_SVC   
+  - name: ACCOUNTS | Add msDS-AllowedToDelegateTo to SQL_SVC   
     win_shell: Set-ADUser -Identity "sql_svc" -Add @{'msDS-AllowedToDelegateTo'=@('CIFS/goku.capsulecorp.local','CIFS/GOKU')} 
 
-  - name: Ensure AD account iis_svc exists
+  - name: ACCOUNTS | Ensure AD account iis_svc exists
     win_domain_user:
       name: iis_svc
       firstname: iis_svc
@@ -29,7 +29,16 @@
         - "IISSvc/raditz.capsulecorp.local:1433"
         - "IISLSvc/raditz.capsulecorp.local"
 
-  - name: Ensure AD account serveradmin exists
+  - name: ACCOUNTS | Ensure AD account vuln_svc exists
+    win_domain_user:
+      name: vuln_svc
+      firstname: vuln_svc
+      password: PassW0rd@SVC
+      state: present
+      groups:
+        - Domain Users
+
+  - name: ACCOUNTS | Ensure AD account serveradmin exists
     win_domain_user:
       name: server.admin
       firstname: ServerAdmin

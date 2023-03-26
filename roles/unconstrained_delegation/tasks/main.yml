@@ -1,0 +1,50 @@
+---
+  - name: Setting Unconstrained delegation
+    win_shell: Set-ADAccountControl -Identity raditz$ -TrustedForDelegation $true
+    become: yes
+    become_method: runas
+    become_user: server.admin@capsulecorp
+    vars:
+      ansible_become_pass: 'P@ssW0rd432!'
+
+  - name: Reboot the machine with all defaults
+    win_reboot:
+
+  - name: Open up port 80 on Windows firewall
+    win_firewall_rule:
+      name: IIS
+      localport: 80
+      action: allow
+      direction: in
+      protocol: tcp
+      state: present
+      enabled: yes
+
+  - name: Install IIS Web-Server with sub features and management tools
+    ansible.windows.win_feature:
+      name: Web-Server
+      state: present
+      include_sub_features: yes
+      include_management_tools: yes
+    register: win_feature
+
+  - name: Remove default Web Site
+    win_shell: Remove-WebSite -Name "Default Web Site"
+
+  - name: Create new site
+    win_shell: New-IISSite -Name 'raditz' -PhysicalPath 'C:\inetpub\wwwroot' -BindingInformation "*:80:raditz.capsulecorp.local"
+
+  - name: Set authentication required
+    win_shell: Set-WebConfigurationProperty -Filter /system.WebServer/security/authentication/anonymousAuthentication -Name enabled -Value $false -Location $Fqdn ; Set-WebConfigurationProperty -Filter /system.WebServer/security/authentication/windowsAuthentication -Name enabled -Value $true -Location $Fqdn ; Set-WebConfigurationProperty -Filter /system.webServer/security/authentication/windowsAuthentication -Name useAppPoolCredentials -Value $true -Location $Fqdn
+
+  - name: Become iis_svc a Local Administrator 
+    ansible.windows.win_group_membership:
+      name: Administrators
+      state: present
+      members:
+        - capsulecorp\iis_svc
+
+# RESOURCES
+# https://blog.xpnsec.com/kerberos-attacks-part-1/
+# https://www.ired.team/offensive-security-experiments/active-directory-kerberos-abuse/domain-compromise-via-unrestricted-kerberos-delegation#overview
+# https://adamtheautomator.com/powershell-iis/#Stopping_a_Single_Site

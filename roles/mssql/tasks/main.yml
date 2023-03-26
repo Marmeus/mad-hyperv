@@ -64,7 +64,7 @@
   #   vars:
   #     ansible_become_pass: "vagrant"
 
-  - name: Firewall | Allow MSSQL through Firewall
+  - name: MSSQL | Allow MSSQL through Firewall
     win_firewall_rule:
       name: Allow MSSQL through Firewall
       localport: 1433
@@ -76,7 +76,7 @@
       enabled: yes
       description: "Opens the listener port for MSSQL"
 
-  - name: Firewall | Allow MSSQL discover through Firewall
+  - name: MSSQL | Allow MSSQL discover through Firewall
     win_firewall_rule:
       name: "Access for MSSQL (UDP-In)"
       localport: 1434
@@ -98,7 +98,7 @@
         url: 'https://aka.ms/ssmsfullsetup'
         dest: 'c:\setup\ssms\SSMS_installer.exe'
 
-  - name: Install SSMS
+  - name: SSMS | Install SSMS
     win_command: c:\setup\ssms\SSMS_installer.exe /install /quiet /norestart
     args:
       chdir: c:\setup
@@ -107,18 +107,18 @@
     retries: 1
     delay: 120
 
-  - name: Reboot after install
+  - name: SSMS | Reboot after install
     win_reboot:
       reboot_timeout: 60
 
-  - name: Grant sql_svc RDP access
+  - name: SSMS | Grant sql_svc RDP access
     ansible.windows.win_group_membership:
       name: Remote Desktop Users
       state: present
       members:
         - capsulecorp\sql_svc
 
-  - name: Become sql_svc a Local Administrator 
+  - name: SSMS | Become sql_svc a Local Administrator 
     ansible.windows.win_group_membership:
       name: Administrators
       state: present

@@ -18,15 +18,16 @@
     - [ ] Probar a eliminar el win_feature "web-server" del main de raditz.
 
 # Gohan - Constrained Delegation
-- [ ] Constrained delegation (MSSL -> DC)
+- [X] Constrained delegation (MSSL -> DC)
   - [X] Install datase server
   - [X] Enable xp_cmdshell -> El usuario tiene permisos para habilitarlo
-  - [ ] Allow domain user to access the database
+  - [X] Allow domain user to access the database
   - [X] Add constrained delegation
 
 # Workstation - Vulnerable service
 
 - [X] Create W10 WST
   - [X] Install vulnerable a service
-- [ ] Install virtual studio code
-- [ ] Install hacking tools
+- [X] Install virtual studio code -> Too much time
+- [X] Install hacking tools
+- [ ] Allow Non Admin users to restart the service

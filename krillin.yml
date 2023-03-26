@@ -12,13 +12,26 @@
     win_shell: cscript slmgr.vbs /rearm
     args:
       chdir: C:\Windows\System32\
-  - name: Ensure user bob is present
+
+  - name: Ensure user Auditor is present
     ansible.windows.win_user:
       name: auditor
       password: Passw0rd
       state: present
       groups:
         - Users
+        - Remote Desktop Users
+
+
+  - name: SSMS | Become sql_svc a Local Administrator 
+    ansible.windows.win_group_membership:
+      name: Administrators
+      state: present
+      members:
+        - capsulecorp\vuln_svc
+
   roles:
     - role: disable_rtm
+    - role: joindomain
     - role: vulnerable_service
+    - role: hacking_tools

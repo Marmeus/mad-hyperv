@@ -1,6 +1,6 @@
-mkdir Tools
-mkdir .\Tools\Enumerate
-mkdir .\Tools\Credentials 
+# mkdir Tools
+# mkdir .\Tools\Enumerate
+# mkdir .\Tools\Credentials 
 
 # Maybe needded
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
@@ -26,3 +26,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/topotam/PetitPotam/mai
 
 # MSSQL
 Invoke-WebRequest -Uri "https://raw.githubusercontent.com/NetSPI/PowerUpSQL/master/PowerUpSQL.ps1" -OutFile .\PowerUpSQL.ps1
+
+# NetCat
+Invoke-WebRequest -Uri "https://github.com/int0x33/nc.exe/raw/master/nc.exe" -OutFile .\nc.exe
