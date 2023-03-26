@@ -20,9 +20,9 @@
 # Gohan - Constrained Delegation
 - [ ] Constrained delegation (MSSL -> DC)
   - [X] Install datase server
-  - [ ] Enable xp_cmdshell
+  - [X] Enable xp_cmdshell -> El usuario tiene permisos para habilitarlo
   - [ ] Allow domain user to access the database
-  - [ ] Add constrained delegation
+  - [X] Add constrained delegation
 
 # Workstation - Vulnerable service
 

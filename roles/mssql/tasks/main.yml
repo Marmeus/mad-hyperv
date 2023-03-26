@@ -18,9 +18,12 @@
     ansible.windows.win_copy:
       src: "files/SQL2019-SSEI-Expr.exe"
       dest: "c:\\setup\\mssql\\sql_installer.exe"
+    vars:
+      ansible_become_user: vagrant
+      ansible_become_password: vagrant
 
   - name: MSSQL | Upload MSSQL configuration file
-    win_template: 
+    ansible.windows.win_template: 
       src: files/sql_conf.ini.j2
       dest: c:\setup\mssql\sql_conf.ini
 
@@ -106,4 +109,18 @@
 
   - name: Reboot after install
     win_reboot:
-      reboot_timeout: 600
+      reboot_timeout: 60
+
+  - name: Grant sql_svc RDP access
+    ansible.windows.win_group_membership:
+      name: Remote Desktop Users
+      state: present
+      members:
+        - capsulecorp\sql_svc
+
+  - name: Become sql_svc a Local Administrator 
+    ansible.windows.win_group_membership:
+      name: Administrators
+      state: present
+      members:
+        - capsulecorp\sql_svc
