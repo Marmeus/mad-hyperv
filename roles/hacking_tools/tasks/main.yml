@@ -4,16 +4,6 @@
       path: c:\Tools
       state: directory
 
-  - name: HACKING TOOLS | Upload ADSearch.exe
-    ansible.windows.win_copy:
-      src: "files/ADSearch.exe"
-      dest: "c:\\Tools\\ADSearch.exe"
-
-  - name: HACKING TOOLS | Upload SharpSpoolTrigger.exe
-    ansible.windows.win_copy:
-      src: "files/SharpSpoolTrigger.exe"
-      dest: "c:\\Tools\\SharpSpoolTrigger.exe"
-
   - name: HACKING TOOLS | Upload DownloadTools.ps1
     ansible.windows.win_copy:
       src: "files/DownloadTools.ps1"
@@ -23,19 +13,4 @@
     win_shell: c:\Tools\DownloadTools.ps1
     args:
       chdir: c:\Tools\
-
-  - name: HACKING TOOLS | Create Certify directory
-    win_file: 
-      path: c:\Tools\Certify
-      state: directory
-
-  - name: HACKING TOOLS | Upload DownloadTools.ps1
-    ansible.windows.win_copy:
-      src: "files/Interop.CERTENROLLLib.dll"
-      dest: "c:\\Tools\\Certify\\Interop.CERTENROLLLib.dll"
-
-  - name: HACKING TOOLS | Upload DownloadTools.ps1
-    ansible.windows.win_copy:
-      src: "files/Certify.exe"
-      dest: "c:\\Tools\\Certify\\Certify.exe"
 

@@ -8,11 +8,6 @@
     ethernet_adapter: "Ethernet"
     anpt_flag: "flag3.txt"
   tasks:
-  - name: Activate windows
-    win_shell: cscript slmgr.vbs /rearm
-    args:
-      chdir: C:\Windows\System32\
-
   - name: Ensure user Auditor is present
     ansible.windows.win_user:
       name: auditor
@@ -22,6 +17,25 @@
         - Users
         - Remote Desktop Users
 
+  - name: Create setup directory
+    win_file: 
+      path: c:\setup
+      state: directory
+
+  - name: Upload Set-UserRights.ps1
+    ansible.windows.win_copy:
+      src: "roles/vulnerable_service/files/Set-UserRights.ps1"
+      dest: "c:\\setup\\Set-UserRights.ps1"
+
+  - name: Set SeShutdownPrivilege to User
+    win_shell: .\Set-UserRights.ps1 -AddRight -Username auditor -UserRight SeShutdownPrivilege
+    args:
+      chdir: c:\setup\
+    vars:
+      ansible_become: yes
+      ansible_become_method: runas
+      ansible_become_user: "vagrant"
+      ansible_become_password: "vagrant"
 
   - name: SSMS | Become sql_svc a Local Administrator 
     ansible.windows.win_group_membership:
@@ -29,6 +43,11 @@
       state: present
       members:
         - capsulecorp\vuln_svc
+
+  - name: Activate windows
+    win_shell: cscript slmgr.vbs /rearm
+    args:
+      chdir: C:\Windows\System32\
 
   roles:
     - role: disable_rtm

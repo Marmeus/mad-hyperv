@@ -8,7 +8,8 @@
   - [ ] Make it into yml files
 - [X] Disable Real Time monitoring in all the machines
   - [X] Disable cloud-delivered protection
-  - [X] Disable sample submission
+  - [X] Disable sample submissio
+- [ ] Install spanish keyboard
 
 # Raditz - Unconstrained Delegation
 - [X] Unconstrained delegation (HTTP-> RADITZ)
@@ -30,4 +31,4 @@
   - [X] Install vulnerable a service
 - [X] Install virtual studio code -> Too much time
 - [X] Install hacking tools
-- [ ] Allow Non Admin users to restart the service
+- [X] Allow Non Admin users to restart the service
