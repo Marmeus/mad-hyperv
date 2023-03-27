@@ -3,7 +3,7 @@
   win_dns_client:
     adapter_names: "{{ ethernet_adapter }}"
     ipv4_addresses:
-      - <DC_IP>
+      - 172.28.35.56
       - 1.1.1.1
   register: dns_setup
 

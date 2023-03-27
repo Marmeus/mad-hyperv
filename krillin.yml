@@ -11,21 +11,11 @@
   - name: Ensure user Auditor is present
     ansible.windows.win_user:
       name: auditor
-      password: Passw0rd
+      password: PassW0rd
       state: present
       groups:
         - Users
         - Remote Desktop Users
-
-  - name: Create setup directory
-    win_file: 
-      path: c:\setup
-      state: directory
-
-  - name: Upload Set-UserRights.ps1
-    ansible.windows.win_copy:
-      src: "roles/vulnerable_service/files/Set-UserRights.ps1"
-      dest: "c:\\setup\\Set-UserRights.ps1"
 
   - name: Set SeShutdownPrivilege to User
     win_shell: .\Set-UserRights.ps1 -AddRight -Username auditor -UserRight SeShutdownPrivilege

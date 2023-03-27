@@ -55,14 +55,24 @@
       state: restarted
     when: win_reg.changed
 
-  # - name: MSSQL | Allow xp_cmdshell
-  #   win_shell: |
-  #     SqlCmd -E -Q "EXEC sp_configure 'show advanced options', 1; RECONFIGURE; EXEC sp_configure 'xp_cmdshell', 1; RECONFIGURE;"
-  #   become: yes
-  #   become_method: runas
-  #   become_user: "vagrant"
-  #   vars:
-  #     ansible_become_pass: "vagrant"
+  - name: MSSQL | Allow xp_cmdshell
+    win_shell: |
+      SqlCmd -E -Q "EXEC sp_configure 'show advanced options', 1; RECONFIGURE; EXEC sp_configure 'xp_cmdshell', 1; RECONFIGURE;"
+    become: yes
+    become_method: runas
+    become_user: "vagrant"
+    vars:
+      ansible_become_pass: "vagrant"
+
+  - name: MSSQL | Make vuln_svc a sysadmin on the MSSQL server
+    win_shell: |
+      SQLCMD -E -Q "if not exists(select * from sys.server_principals where name='capsulecorp\vuln_svc') CREATE LOGIN [capsulecorp\vuln_svc] FROM WINDOWS;EXEC master..sp_addsrvrolemember @loginame = N'capsulecorp\vuln_svc', @rolename = N'sysadmin'"
+    become: yes
+    become_method: runas
+    become_user: "vagrant"
+    vars:
+      ansible_become_pass: "vagrant"
+
 
   - name: MSSQL | Allow MSSQL through Firewall
     win_firewall_rule:

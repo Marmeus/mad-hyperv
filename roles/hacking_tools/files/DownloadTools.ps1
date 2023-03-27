@@ -18,19 +18,26 @@ Invoke-WebRequest -Uri "https://github.com/Marmeus/capsulecorp-pentest-hyperv/ra
 # ===========
 Invoke-WebRequest -Uri "https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Exfiltration/Invoke-Mimikatz.ps1" -OutFile .\Invoke-Mimikatz.ps1
 Invoke-WebRequest -Uri "https://github.com/caday00/mimikatz2.1.1/raw/master/mimikatz_trunk.zip" -OutFile .\mimikatz.zip
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/credentials/Invoke-Kerberoast.ps1" -OutFile .\Invoke-Kerberoast.ps1
 
 # MULTI PURPOUSE
 # ==============
 Invoke-WebRequest -Uri "https://raw.githubusercontent.com/r3motecontrol/Ghostpack-CompiledBinaries/master/Rubeus.exe" -OutFile .\Rubeus.exe
 
+# Certificates
+# ============
 Invoke-WebRequest -Uri "https://github.com/Marmeus/capsulecorp-pentest-hyperv/raw/master/roles/hacking_tools/files/Interop.CERTENROLLLib.dll" -OutFile .\Certify\Interop.CERTENROLLLib.dll
+Invoke-WebRequest -Uri "https://github.com/Marmeus/capsulecorp-pentest-hyperv/raw/master/roles/hacking_tools/files/Certify.exe" -OutFile .\Certify\Certify.exe
+
+# Privilege Escalation 
+# ====================
+Invoke-WebRequest -Uri "https://github.com/r3motecontrol/Ghostpack-CompiledBinaries/raw/master/SharpUp.exe" -OutFile SharpUp.exe
 
 # Unconstrained delegation
 # ========================
 Invoke-WebRequest -Uri "https://github.com/jtmpu/PrecompiledBinaries/raw/master/SpoolSample.exe" -OutFile .\SpoolSample.exe
 Invoke-WebRequest -Uri "https://raw.githubusercontent.com/topotam/PetitPotam/main/PetitPotam.exe" -OutFile .\PetitPotam.exe
 Invoke-WebRequest -Uri "https://github.com/Marmeus/capsulecorp-pentest-hyperv/raw/master/roles/hacking_tools/files/SharpSpoolTrigger.exe" -OutFile .\SharpSpoolTrigger.exe
-
 
 # NetCat
 Invoke-WebRequest -Uri "https://github.com/int0x33/nc.exe/raw/master/nc.exe" -OutFile .\nc.exe

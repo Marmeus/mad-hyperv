@@ -1,8 +1,23 @@
 ---
+  - name: VULN SERVICE | Create setup directory
+    win_file: 
+      path: c:\setup
+      state: directory
+
+  - name: VULN SERVICE | Upload Set-UserRights.ps1
+    ansible.windows.win_copy:
+      src: "files/Set-UserRights.ps1"
+      dest: "c:\\setup\\Set-UserRights.ps1"
+
   - name: VULN SERVICE | Create service folder
     ansible.windows.win_file:
       path: C:\\Program Files\\Vulnerable Service\\
       state: directory
+
+  - name: Upload service file
+    ansible.windows.win_copy:
+      src: "files/service.exe"
+      dest: "C:\\Program Files\\Vulnerable Service\\service.exe"
 
   - name: VULN SERVICE | Modify write permissions of vulnerable service folder
     ansible.windows.win_acl:
@@ -13,6 +28,7 @@
 
   # - name: Create a service
   #   win_shell: New-Service -Name "VulnService" -DisplayName "Vulnerable Service" -Description "This is a vulnerable service."  -BinaryPathName "C:\Program Files\Vulnerable Service\service.exe" -StartupType Auto
+
   - name: VULN SERVICE | Grant domain account the SeServiceLogonRight user right
     ansible.windows.win_user_right:
       name: SeServiceLogonRight
@@ -23,6 +39,7 @@
   - name: VULN SERVICE | Set the log on user to a domain account
     ansible.windows.win_service:
       name: "Vuln"
+      state: stopped
       start_mode: auto
       description:
       path: C:\Program Files\Vulnerable Service\service.exe

@@ -31,4 +31,5 @@
   - [X] Install vulnerable a service
 - [X] Install virtual studio code -> Too much time
 - [X] Install hacking tools
-- [X] Allow Non Admin users to restart the service
+- [X] Allow Non Admin users to restart the machine
+- [X] Make vuln_svc sysadmin at MSSQL service

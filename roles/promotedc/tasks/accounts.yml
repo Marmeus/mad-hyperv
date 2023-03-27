@@ -21,7 +21,7 @@
     win_domain_user:
       name: iis_svc
       firstname: iis_svc
-      password: PassW0rd@IIS
+      password: webmaster
       state: present
       groups:
         - Domain Users
