@@ -6,7 +6,21 @@
     ansible_winrm_scheme: http
     capsulecorp_domain_hostname: "gohan"
     ethernet_adapter: "Ethernet"
+    host_ip: "192.168.56.5"
   tasks:
+  - name: Fix a host static IP after reboot
+    community.windows.win_scheduled_task:
+      name: TaskName2
+      description: open command prompt
+      actions:
+      - path: cmd
+        arguments: /c netsh interface ipv4 set address name="Ethernet" static {{host_ip}} 255.255.255.0 192.168.56.1
+      triggers:
+      - type: boot
+      username: SYSTEM
+      state: present
+      enabled: yes
+
   - name: Activate windows
     win_shell: cscript slmgr.vbs /rearm
     args:

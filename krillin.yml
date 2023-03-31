@@ -7,6 +7,7 @@
     capsulecorp_domain_hostname: "krillin"
     ethernet_adapter: "Ethernet"
     anpt_flag: "flag3.txt"
+    host_ip: "192.168.56.3"
   tasks:
   - name: Ensure user Auditor is present
     ansible.windows.win_user:
@@ -33,6 +34,19 @@
       state: present
       members:
         - capsulecorp\vuln_svc
+
+  - name: Fix host static IP after reboot
+    community.windows.win_scheduled_task:
+      name: TaskName2
+      description: open command prompt
+      actions:
+      - path: cmd
+        arguments: /c netsh interface ipv4 set address name="Ethernet" static {{host_ip}} 255.255.255.0 192.168.56.1
+      triggers:
+      - type: boot
+      username: SYSTEM
+      state: present
+      enabled: yes
 
   - name: Activate windows
     win_shell: cscript slmgr.vbs /rearm

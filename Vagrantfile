@@ -6,7 +6,9 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
-
+  
+  config.vm.network "public_network", bridge: "NATSwitch"
+  
   config.vm.synced_folder '.', '/vagrant', disabled: true
   #winsrv = "StefanScherer/windows_2019"
   winsrv = "gusztavvargadr/windows-server"
@@ -17,6 +19,7 @@ Vagrant.configure("2") do |config|
 	 {name: "gohan", ip: "192.168.56.120", box: winsrv},
 	 {name: "trunks", ip: "192.168.56.130", box: winsrv},
 	 {name: "raditz", ip: "192.168.56.150", box: winsrv},
+   {name: "test", ip: "192.168.56.154", box: winsrv},
 	 {name: "tien", ip: "192.168.56.140", box: winwks}]
 
   vms.each do |vm|
@@ -28,7 +31,9 @@ Vagrant.configure("2") do |config|
       box.winrm.transport = :plaintext
       box.winrm.basic_auth_only = true
       box.vm.communicator = "winrm"
-      box.vm.network :private_network, ip: vm[:ip], netmask: "255.255.0.0", gateway: "192.168.56.1"
+      # box.vm.network "public_network", ip: "192.168.56.2", netmask: "24", gateway: "192.168.56.1"
+      # box.vm.network "public_network", ip: vm[:ip], bridge: "NATSwitch",:mac => "00155DB001DD"
+      box.vm.network "public_network", :bridge => 'NATSwitch'
 
       box.vm.provider "hyperv" do |hv|
         hv.vmname = "ccpt_#{vm[:name]}"

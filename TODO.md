@@ -1,7 +1,7 @@
 # TODO
 
 # General
-- [ ] Static IPs
+- [X] Static IPs
 - [ ] Create a confi.json with all the repited data like domain admin credentials
 - [X] Install Vuln-AD-plus -> The problem was on the script :D
   - [ ] Script Output into a file
