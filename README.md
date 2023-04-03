@@ -1,4 +1,4 @@
-**Discord:** [![](https://dcbadge.vercel.app/api/server/D5QTtWEwxZ)](https://discord.gg/D5QTtWEwxZ)
+**Discord:** [![](https://dcbadge.vercel.app/api/server/D5QTtWEwxZ)](https://discord.gg/D5QTtWEwxZ) -> Ping me if you need help setting up the environment or add new features.
 
 
 # 1. Capsulecorp AD Pentest (Hyper-v)
@@ -16,9 +16,9 @@ Nowadays, there is no free platform where you interact with a vulnerable Activer
 
 Furthermore, I created a [small hacking path](./WRITEUP.md) to become Domain Admin in this environment in several ways, starting as a local user named "auditor".
 
-## 1.1. Requirements
+# Requirements
 
-- A Windows system with at least 8GB of RAM.
+- A Windows system with at least 8GB of RAM and Windows Hyper-V capabilities.
 
 # Active Directory Vulnerabilities
 - Vulnerable Service
@@ -57,7 +57,9 @@ Furthermore, I created a [small hacking path](./WRITEUP.md) to become Domain Adm
 
 - Public SMB Share
 
-  
+# Installation
+
+The installation process can be followed in the [INSTALLATION](./INSTALLATION.md) file.
 
 # References
 
