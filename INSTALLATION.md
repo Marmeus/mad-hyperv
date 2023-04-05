@@ -45,11 +45,7 @@ echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://
 sudo apt update && sudo apt install vagrant -y
 ```
 
-> A few vagrant plugins are required to launch and provision all of the VMs.  If you below vagrant plugin install commands fail, open up an administrative PowerShell prompt and run the command.
-> ```
-Restart-Service LxssManager
-> ```
-
+> A few vagrant plugins are required to launch and provision all of the VMs.  If you below vagrant plugin install commands fail, open up an administrative PowerShell prompt and run the command `Restart-Service LxssManager`.
 
 ```bash
 vagrant plugin install winrm
@@ -142,5 +138,10 @@ rm -rf /mnt/c/capsulecorp-pentest-hyperv/
 Remove-VMSwitch -SwitchName "NATSwitch" -Force
 ```
 
-3. Disable Hyper-V on "Turn Windows features on or off".
+3. Disable Hyper-V on "Turn Windows features on or off" or through a PowerShell as Administrator.
+
+> If you want to enable, change `off` to `auto`.
+```powershell
+bcdedit /set hypervisorlaunchtype off
+```
 
