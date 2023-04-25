@@ -121,7 +121,7 @@ cd /mnt/c/capsulecorp-pentest-hyperv/
 vagrant up goku krillin raditz gohan --provision
 ```
 
-# Cleaning process
+# Uninstall
 
 In case you are tired of this lab environment or you are having problems with VirtualBox, you can get rid of everything with the following commands.
 
