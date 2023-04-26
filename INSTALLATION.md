@@ -135,7 +135,7 @@ cd /mnt/c/capsulecorp-pentest-hyperv/
 vagrant up goku krillin raditz gohan pentest --provision
 ```
 
-> :information_source: I encourage you to perform a `sudo apt update && sudo apt dist-upgrade -y` on the Kali machine to keep all the tools updated.
+> :warning: If you want to perform a `dist-upgrade` on the Kali (pentest) machine, it might break the enhanced hyper-v session, so you will lose the copy and paste stuff.
 
 # Uninstall
 
