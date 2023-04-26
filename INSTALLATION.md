@@ -135,6 +135,8 @@ cd /mnt/c/capsulecorp-pentest-hyperv/
 vagrant up goku krillin raditz gohan pentest --provision
 ```
 
+> :information_source: I encourage you to perform a `sudo apt update && sudo apt dist-upgrade -y` on the Kali machine to keep all the tools updated.
+
 # Uninstall
 
 In case you are tired of this lab environment or you are having problems with VirtualBox, you can get rid of everything with the following commands.
