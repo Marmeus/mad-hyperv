@@ -13,14 +13,18 @@ Vagrant.configure("2") do |config|
   #winsrv = "StefanScherer/windows_2019"
   winsrv = "gusztavvargadr/windows-server"
   winwks = "gusztavvargadr/windows-10"
-  vms = [{name: "goku", ip: "192.168.56.100", box: winsrv},
-         {name: "vegeta", ip: "192.168.56.110", box: winsrv},
-         {name: "krillin", ip: "192.168.56.111", box: winsrv},
-	 {name: "gohan", ip: "192.168.56.120", box: winsrv},
-	 {name: "trunks", ip: "192.168.56.130", box: winsrv},
-	 {name: "raditz", ip: "192.168.56.150", box: winsrv},
-   {name: "test", ip: "192.168.56.154", box: winsrv},
-	 {name: "tien", ip: "192.168.56.140", box: winwks}]
+  kali = "elrey741/kali-linux_amd64"
+  com_win = "winrm"
+  com_kali = "ssh"
+  vms = [{name: "goku", ip: "192.168.56.100", box: winsrv, communicator:com_win},
+         {name: "vegeta", ip: "192.168.56.110", box: winsrv, communicator:com_win},
+         {name: "krillin", ip: "192.168.56.111", box: winsrv, communicator:com_win},
+	 {name: "gohan", ip: "192.168.56.120", box: winsrv, communicator:com_win},
+	 {name: "trunks", ip: "192.168.56.130", box: winsrv, communicator:com_win},
+	 {name: "raditz", ip: "192.168.56.150", box: winsrv, communicator:com_win},
+   {name: "test", ip: "192.168.56.154", box: winsrv, communicator:com_win},
+	 {name: "tien", ip: "192.168.56.140", box: winwks, communicator:com_win},
+   {name: "pentest", ip: "192.168.56.6", box: kali, communicator:com_kali}]
 
   vms.each do |vm|
     config.vm.define vm[:name] do |box|
@@ -30,7 +34,7 @@ Vagrant.configure("2") do |config|
 
       box.winrm.transport = :plaintext
       box.winrm.basic_auth_only = true
-      box.vm.communicator = "winrm"
+      box.vm.communicator = vm[:communicator]
       # box.vm.network "public_network", ip: "192.168.56.2", netmask: "24", gateway: "192.168.56.1"
       # box.vm.network "public_network", ip: vm[:ip], bridge: "NATSwitch",:mac => "00155DB001DD"
       box.vm.network "public_network", :bridge => 'NATSwitch'

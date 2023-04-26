@@ -26,11 +26,25 @@ wsl --install -d ubuntu
 Then, once you have set up your Ubuntu machine and created a user, execute the following commands as user to install Ansible.
 
 ```bash
-sudo apt install python3-pip
+sudo apt update
+sudo apt install python3-pip -y
 echo 'PATH=~/.local/bin:$PATH' >> ~/.bashrc
 pip install --user ansible==7.3.0
 pip install pywinrm==0.4.3 --user
 ```
+
+Plus, you must create the file `/etc/wsl.conf` with the following content, so ansible can connect to the Linux machine through SSH.
+
+```bash
+# Enable extra metadata options by default
+[automount]
+enabled = true
+root = /mnt/
+options = "metadata,umask=77,fmask=11"
+mountFsTab = false
+```
+
+Then, execute the command `Restart-Service LxssManager` within an elevated PowerShell.
 
 ### Vagrant
 
@@ -118,7 +132,7 @@ Finally, once the server is running, open your Ubuntu WSL  as Administrator an e
 
 ```bash
 cd /mnt/c/capsulecorp-pentest-hyperv/
-vagrant up goku krillin raditz gohan --provision
+vagrant up goku krillin raditz gohan pentest --provision
 ```
 
 # Cleaning process
@@ -128,7 +142,7 @@ In case you are tired of this lab environment or you are having problems with Vi
 1. On your Ubuntu WSL, executed as Administrator. 
 
 ```bash
-vagrant destroy goku krillin raditz gohan -f
+vagrant destroy goku krillin raditz gohan pentest -f
 rm -rf /mnt/c/capsulecorp-pentest-hyperv/
 ```
 
@@ -136,6 +150,7 @@ rm -rf /mnt/c/capsulecorp-pentest-hyperv/
 
 ```powershell
 Remove-VMSwitch -SwitchName "NATSwitch" -Force
+Remove-NetNat -Confirm:$false -Name "NATNetwork"
 ```
 
 3. Disable Hyper-V on "Turn Windows features on or off" or through a PowerShell as Administrator.

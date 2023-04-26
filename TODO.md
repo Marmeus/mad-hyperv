@@ -5,7 +5,7 @@
 - [ ] Create a config.json with all the repited data like domain admin credentials
 - [X] Install Vuln-AD-plus -> The problem was on the script :D
   - [ ] Script Output into a file
-  - [ ] Make it into yml files
+  - [ ] Make it into a .yml filey
 - [X] Disable Real Time monitoring in all the machines
   - [X] Disable cloud-delivered protection
   - [X] Disable sample submissio
@@ -33,3 +33,11 @@
 - [X] Install hacking tools
 - [X] Allow Non Admin users to restart the machine
 - [X] Make vuln_svc sysadmin at MSSQL service
+
+
+# Kali machine
+- [X] Create a kali machine for Hyper-V
+- [X] Set static IP
+- [X] Fix sources.list keys
+- [X] Fix error to install packages without upgrading the machine
+- [X] Install Tools
