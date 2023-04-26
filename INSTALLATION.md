@@ -1,10 +1,10 @@
 # Installation Process
 
-Please, read the whole installation process carefully. It is not completely a copy and paste installation guide :exclamation: 
+Please, read the whole installation process carefully. It is not entirely a copy-and-paste installation guide :exclamation: 
 
 ## 1. Enable Hyper-V feature
 
-In order to enable Hyper-V on your Windows System, go to `Control Panel\Programs\Turn Windows features on or off\`, and then look for "Hyper-V".
+To enable Hyper-V on your Windows System, go to `Control Panel\Programs\Turn Windows features on or off\`, and then look for "Hyper-V".
 
 ![image-20230331180017528](Images/image-20230331180017528.png)
 
@@ -23,7 +23,7 @@ wsl --install -d ubuntu
 
 ### Ansible
 
-Then, once you have set up your Ubuntu machine and created a user, execute the following commands as user to install Ansible.
+Then, once you have set up your Ubuntu machine and created a user, execute the following commands as a user to install Ansible.
 
 ```bash
 sudo apt update
@@ -128,14 +128,14 @@ Now, install and start the DHCP server executing the file `dhcpsrv.exe`  as Admi
 
 Then, download the repository on `C:\`, so it can be accessed pretty easily through Ubuntu WSL
 
-Finally, once the server is running, open your Ubuntu WSL  as Administrator an execute the following command and wait for it to finish. After that, you can stop and remove the DHCP server.
+Finally, once the server is running, open your Ubuntu WSL  as an Administrator, and execute the following command and wait for it to finish. After that, you can stop and remove the DHCP server.
 
 ```bash
 cd /mnt/c/capsulecorp-pentest-hyperv/
 vagrant up goku krillin raditz gohan pentest --provision
 ```
 
-> :warning: If you want to perform a `dist-upgrade` on the Kali (pentest) machine, it might break the enhanced hyper-v session, so you will lose the copy and paste stuff.
+> :warning: If you want to perform `dist-upgrade` or `upgrade` on the Kali (pentest) machine, it might break the enhanced hyper-v session or even brake the GUI, so to recover those features, there is a script at `/home/auditor/install_xrdp.sh`, that you only need to do `chmod +x install_xrdp.sh; sudo ./install_xrdp.sh; sudo reboot` in order to fix everything, hopefully :sweat_smile:.
 
 # Uninstall
 
@@ -157,7 +157,7 @@ Remove-NetNat -Confirm:$false -Name "NATNetwork"
 
 3. Disable Hyper-V on "Turn Windows features on or off" or through a PowerShell as Administrator.
 
-> If you want to enable, change `off` to `auto`.
+> If you want to enable it again, change `off` to `auto`.
 ```powershell
 bcdedit /set hypervisorlaunchtype off
 ```
