@@ -16,8 +16,15 @@ To enable Hyper-V on your Windows System, go to `Control Panel\Programs\Turn Win
 
 ### Windows Subsystem for Linux (WSL)
 
-You can install WSL by executing the following command on a Windows terminal as Administrator. 
+Configure the WSL to version 1, so it uses the bridge Internace, instead of NAT in v2. For doing so, execute the following command on Powershell as Administrator.
+
+```powershell
+wsl --set-default 1
 ```
+
+Then, install the Ubuntu WSL.
+
+```powershell
 wsl --install -d ubuntu
 ```
 
@@ -29,6 +36,7 @@ Then, once you have set up your Ubuntu machine and created a user, execute the f
 sudo apt update
 sudo apt install python3-pip -y
 echo 'PATH=~/.local/bin:$PATH' >> ~/.bashrc
+source ~/.bashrc
 pip install --user ansible==7.3.0
 pip install pywinrm==0.4.3 --user
 ```
@@ -131,7 +139,7 @@ Then, download the repository on `C:\`, so it can be accessed pretty easily thro
 Finally, once the server is running, open your Ubuntu WSL  as an Administrator, and execute the following command and wait for it to finish. After that, you can stop and remove the DHCP server.
 
 ```bash
-cd /mnt/c/capsulecorp-pentest-hyperv/
+cd /mnt/c/capsulecorp-ad-pentest-hyperv/
 vagrant up goku krillin raditz gohan pentest --provision
 ```
 
