@@ -70,11 +70,13 @@ The installation process can be followed in the [INSTALLATION](./INSTALLATION.md
 At the end of the installation process, your network should look like this:
 
 ```
-Goku - 192.168.56.2
-Krillin - 192.168.56.3
-Raditz - 192.168.56.4
-Gohan - 192.168.56.5
-Pentest (Kali) - 192.168.56.6
+KMS - 192.168.56.2
+WDev - 192.168.56.3
+Kali - 192.168.56.4
+Goku (DC) - 192.168.56.5
+Krillin (Vuln Service) - 192.168.56.6
+Raditz (Unconstrianed Delegation) - 192.168.56.7
+Gohan (Constrained Delegation) - 192.168.56.8
 ```
 
 # References

@@ -1,9 +1,0 @@
----
-  - name: Kali | Upload Interfaces
-    template:
-      src: "files/interfaces"
-      dest: "/etc/network/interfaces"
-  - name: Kali | Upload Wired Connection 1
-    template:
-      src: "files/WiredConnection1"
-      dest: "/etc/NetworkManager/system-connections/Wired\ connection\ 1"

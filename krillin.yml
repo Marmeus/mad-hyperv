@@ -7,8 +7,10 @@
     capsulecorp_domain_hostname: "krillin"
     ethernet_adapter: "Ethernet"
     anpt_flag: "flag3.txt"
-    host_ip: "192.168.56.3"
+    host_ip: "192.168.56.6"
   tasks:
+  - include_tasks: "./roles/activate_windows/tasks/windows_wks.yml"
+
   - name: Ensure user Auditor is present
     ansible.windows.win_user:
       name: auditor

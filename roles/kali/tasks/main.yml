@@ -1,10 +1,4 @@
 ---
-- hosts: pentest
-  become: true
-  gather_facts: True
-  roles:
-    - role: linux_static_ip
-  tasks:    
   - name: Kali | Updated apt keys
     shell: wget --no-check-certificate https://http.kali.org/kali/pool/main/k/kali-archive-keyring/kali-archive-keyring_2022.1_all.deb -O /tmp/keyring_2022.deb; apt install -f /tmp/keyring_2022.deb
 
@@ -40,6 +34,16 @@
     template:
       src: "files/install_xrdp.sh"
       dest: "/home/auditor/install_xrdp.sh"
+
+  - name: Kali | Upload Interfaces
+    template:
+      src: "files/interfaces"
+      dest: "/etc/network/interfaces"
+      
+  - name: Kali | Upload Wired Connection 1
+    template:
+      src: "files/WiredConnection1"
+      dest: "/etc/NetworkManager/system-connections/Wired\ connection\ 1"
 
   - name: Kali | Reboot the machine
     reboot:

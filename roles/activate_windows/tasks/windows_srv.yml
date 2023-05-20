@@ -1,0 +1,8 @@
+---
+  - name: Upload Windows Activation Script
+    ansible.windows.win_copy:
+      src: "../files/activate_srv.bat"
+      dest: "C:\\Users\\vagrant\\Downloads\\activate_srv.bat"
+
+  - name: Execute Windows Activation Script
+    win_command: "C:\\Users\\vagrant\\Downloads\\activate_srv.bat"

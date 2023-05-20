@@ -95,7 +95,7 @@ Then, you will need to set up a DHCP server, so the machines can obtain an IP on
 
 The DHCP server I used for setting up the lab is from www.dhcpserver.de, a very intuitive and easy to set up. Follow the installation process as appears on this [link](https://www.dhcpserver.de/cms/running_the_server/).
 
-> :information_source: Do not forget to configure the firewall exceptions.
+> :information_source: Download it on `C:\widhcp` and do not forget to configure the firewall exceptions.
 
 Once you have completed the process executing `dhcpwiz.exe` , replace the content of the file `dhcpsrv.ini` with the following content.
 

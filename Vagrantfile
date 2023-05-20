@@ -10,21 +10,32 @@ Vagrant.configure("2") do |config|
   config.vm.network "public_network", bridge: "NATSwitch"
   
   config.vm.synced_folder '.', '/vagrant', disabled: true
+
+
+  # Clodu machines
   #winsrv = "StefanScherer/windows_2019"
   winsrv = "gusztavvargadr/windows-server"
-  winwks = "gusztavvargadr/windows-10"
+  winwstn = "gusztavvargadr/windows-10"
   kali = "elrey741/kali-linux_amd64"
+  ubuntu22 = "generic/ubuntu2204"
+
+  # Types of connection
   com_win = "winrm"
-  com_kali = "ssh"
-  vms = [{name: "goku", ip: "192.168.56.100", box: winsrv, communicator:com_win},
-         {name: "vegeta", ip: "192.168.56.110", box: winsrv, communicator:com_win},
-         {name: "krillin", ip: "192.168.56.111", box: winsrv, communicator:com_win},
-	 {name: "gohan", ip: "192.168.56.120", box: winsrv, communicator:com_win},
-	 {name: "trunks", ip: "192.168.56.130", box: winsrv, communicator:com_win},
-	 {name: "raditz", ip: "192.168.56.150", box: winsrv, communicator:com_win},
-   {name: "test", ip: "192.168.56.154", box: winsrv, communicator:com_win},
-	 {name: "tien", ip: "192.168.56.140", box: winwks, communicator:com_win},
-   {name: "pentest", ip: "192.168.56.6", box: kali, communicator:com_kali}]
+  com_linux = "ssh"
+
+  # VM configuration (IPs do not work for Hyper-V environments)
+  vms = [{name: "kms", ip: "0.0.0.0", box: ubuntu22, communicator:com_linux},
+         {name: "goku", ip: "0.0.0.0", box: winsrv, communicator:com_win},
+         {name: "krillin", ip: "0.0.0.0", box: winsrv, communicator:com_win},
+         {name: "raditz", ip: "0.0.0.0", box: winsrv, communicator:com_win},
+	       {name: "gohan", ip: "0.0.0.0", box: winsrv, communicator:com_win},
+         {name: "kali", ip: "0.0.0.0", box: kali, communicator:com_linux},
+         {name: "development", ip: "0.0.0.0", box: winwstn, communicator:com_win},
+         {name: "vegeta", ip: "0.0.0.0", box: winsrv, communicator:com_win},
+         {name: "trunks", ip: "0.0.0.0", box: winsrv, communicator:com_win},
+         {name: "tien", ip: "0.0.0.0", box: winwstn, communicator:com_win},
+         {name: "testsrv", ip: "0.0.0.0", box: winsrv, communicator:com_win}
+        ]
 
   vms.each do |vm|
     config.vm.define vm[:name] do |box|

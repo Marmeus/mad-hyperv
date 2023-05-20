@@ -1,0 +1,48 @@
+---
+- hosts: development
+  gather_facts: True
+  vars:
+    ansible_winrm_transport: plaintext
+    ansible_winrm_scheme: http
+    ethernet_adapter: "Ethernet"
+    host_ip: "192.168.56.3"
+  roles:
+  - role: windows_ip
+  - role: disable_rtm
+  tasks:
+  - include_tasks: "./roles/activate_windows/tasks/windows_wks.yml"
+
+  - name: Development | Download Visual Studio Code Zip
+    win_shell: Invoke-WebRequest -Uri "https://code.visualstudio.com/sha/download?build=stable&os=win32-x64-archive" -OutFile C:\\Users\\vagrant\\Downloads\\VSCodex64.zip
+
+  - name: Development | Unzip Visual Studio Code Zip
+    community.windows.win_unzip:
+      src: C:\\Users\\vagrant\\Downloads\\VSCodex64.zip
+      dest: C:\Users\vagrant\AppData\Local\Programs\MicrosoftVSCode\
+  
+  - name: Development | Add Code to PATH
+    win_shell: setx PATH {{'"'}}$($env:path);C:\Users\vagrant\AppData\Local\Programs\MicrosoftVSCode\{{'"'}}
+
+  - name:  Development | Create Code shortcut
+    community.windows.win_shortcut:
+      src: C:\Users\vagrant\AppData\Local\Programs\MicrosoftVSCode\Code.exe
+      dest: C:\Users\vagrant\Desktop\Code.lnk
+      icon: C:\Users\vagrant\AppData\Local\Programs\MicrosoftVSCode\Code.exe,0
+
+  - name:  Development | Create Code shortcut
+    community.windows.win_shortcut:
+      src: C:\Users\vagrant\AppData\Local\Programs\MicrosoftVSCode\Code.exe
+      dest: C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Code.lnk
+      icon: C:\Users\vagrant\AppData\Local\Programs\MicrosoftVSCode\Code.exe,0
+    
+  - name: Development | Download Visual Studio Installer
+    win_shell: Invoke-WebRequest -Uri https://aka.ms/vs/17/release/vs_community.exe -OutFile C:\\Users\\vagrant\\Downloads\\vs_community.exe
+
+  - name: Development | Install Windows Studio (Do not worry, it takes a lot...)
+    win_shell: C:\\Users\\vagrant\\Downloads\\vs_community.exe --includeRecommended --wait --quiet --add Microsoft.VisualStudio.Workload.ManagedDesktop
+
+  - name:  Development | Create Visua Studio shortcut
+    community.windows.win_shortcut:
+      src: C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe
+      dest: C:\Users\vagrant\Desktop\VSCode.lnk
+      icon: C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe,0

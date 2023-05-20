@@ -1,0 +1,20 @@
+---
+  - name: KMS | Update repositories and install "docker.io" package
+    ansible.builtin.apt:
+      name: docker.io
+      update_cache: yes
+      
+  - name: KMS | Install py-kms
+    shell: docker run -d --name py-kms --restart always -p 1688:1688 pykmsorg/py-kms
+
+  - name: KMS | Add vagrant to Docker group
+    shell: usermod -aG docker vagrant
+
+  - name: KMS | Upload network file
+    template:
+      src: "files/00-installer-config.yaml"
+      dest: "/etc/netplan/00-installer-config.yaml"
+
+  - name: KMS | Reboot the machine
+    reboot:
+      reboot_timeout: 100

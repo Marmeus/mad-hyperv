@@ -1,0 +1,7 @@
+---
+- hosts: kms
+  become: true
+  gather_facts: True
+  roles:
+  - role: kms
+

@@ -6,8 +6,10 @@
     domain_Name: capsulecorp.local
     ansible_winrm_transport: plaintext
     ansible_winrm_scheme: http
-    host_ip: "192.168.56.2"
+    host_ip: "192.168.56.5"
   tasks:
+  - include_tasks: "./roles/activate_windows/tasks/windows_wks.yml"
+  
   - name: Fix host static IP after reboot
     community.windows.win_scheduled_task:
       name: TaskName2

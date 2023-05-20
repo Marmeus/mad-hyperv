@@ -7,8 +7,10 @@
     capsulecorp_domain_hostname: "raditz"
     ethernet_adapter: "Ethernet"
     anpt_flag: "flag3.txt" 
-    host_ip: "192.168.56.4"
+    host_ip: "192.168.56.7"
   tasks:
+  - include_tasks: "./roles/activate_windows/tasks/windows_wks.yml"
+
   - name: Fix a host static IP after reboot
     community.windows.win_scheduled_task:
       name: TaskName2

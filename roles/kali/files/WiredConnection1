@@ -10,7 +10,7 @@ timestamp=1637563273
 mac-address-blacklist=
 
 [ipv4]
-address1=192.168.56.6/24,192.168.56.1
+address1=192.168.56.4/24,192.168.56.1
 dns=1.1.1.1;
 dns-search=
 method=manual

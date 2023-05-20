@@ -12,7 +12,7 @@ iface lo inet loopback
 allow-hotplug  eth0
 #iface eth0 inet eth0
 Inface eth0 inet static
-        address 192.168.56.6
+        address 192.168.56.4
         netmask 255.255.255.0
         broadcast 192.255.255.255
         Gateway 192.168.56.1
