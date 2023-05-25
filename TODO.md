@@ -9,6 +9,7 @@
 - [X] Disable Real Time monitoring in all the machines
   - [X] Disable cloud-delivered protection
   - [X] Disable sample submissio
+- [ ] Fix enhanced session on Windows Machines
 - [ ] Install spanish keyboard
 ```yml
 - name: Windows | Add the fr keyboard layout
@@ -24,7 +25,6 @@ cscript //nologo c:\windows\system32\slmgr.vbs /skms 192.168.56.6:1688
 cscript //nologo c:\windows\system32\slmgr.vbs /ato
 
 # Windows 10 Enterprise Evaluation
-
 <Upload skus-Windows-10.zip>
 Expand-Archive -Force .\skus-Windows-10.zip C:\Windows\System32\spp\tokens\skus\
 cscript.exe %windir%\system32\slmgr.vbs /rilc
@@ -73,6 +73,8 @@ cscript.exe .\OSPP.VBS /sethst:192.168.56.2
 cscript.exe .\OSPP.VBS /act
 ```
 - [ ] Change from Windows Server To Workstation
+  - [ ] Disable tamper monitoring
+  - [X]  Install AD cmdlets
 ```powershell
 Get-WindowsCapability -Name RSAT* -Online
 Add-WindowsCapability -Online -Name 'Rsat.ActiveDirectory.DS-LDS.Tools~~~~0.0.1.0'
@@ -86,6 +88,7 @@ Add-WindowsCapability -Online -Name 'Rsat.ActiveDirectory.DS-LDS.Tools~~~~0.0.1.
 - [X] Install Tools
 - [X] Install apache2
 - [X] Install samba server
+- [ ] Allow Remote RDP
 
 ```bash
 [visualstudio]

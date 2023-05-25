@@ -37,6 +37,13 @@
         net use Z: /delete
         net use Z: \\192.168.56.4\visualstudio '' /user:''
 
+  - name: DEVELOPMENT | Allow Insecure SMB Guest Auth
+    ansible.windows.win_regedit:
+      path: HKLM:\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters
+      name: AllowInsecureGuestAuth
+      data: 1
+      type: dword
+
   - name: "DEVELOPMENT | Create README.txt"
     win_copy:
       dest: C:\Users\auditor\Desktop\README.txt
