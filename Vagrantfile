@@ -15,7 +15,7 @@ Vagrant.configure("2") do |config|
   # Clodu machines
   #winsrv = "StefanScherer/windows_2019"
   winsrv = "gusztavvargadr/windows-server"
-  winwstn = "gusztavvargadr/windows-10"
+  winwstn = "StefanScherer/windows_10"
   kali = "elrey741/kali-linux_amd64"
   ubuntu22 = "generic/ubuntu2204"
 
@@ -53,17 +53,8 @@ Vagrant.configure("2") do |config|
       box.vm.provider "hyperv" do |hv|
         hv.vmname = "ccpt_#{vm[:name]}"
         hv.cpus = 2
+        hv.memory = "2048"
         hv.enable_enhanced_session_mode = true 
-      end
-
-      box.vm.provider "virtualbox" do |vb, override|
-        vb.gui = false
-        vb.name = "ccpt_#{vm[:name]}"
-        vb.customize ["modifyvm", :id, "--memory", 1024]
-        vb.customize ["modifyvm", :id, "--cpus", 1]
-        vb.customize ["modifyvm", :id, "--vram", 32]
-        vb.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
-        vb.customize ["setextradata", "global", "GUI/SuppressMessages", "all"]
       end
 
       box.vm.provision "ansible" do |ansible| 
@@ -71,25 +62,6 @@ Vagrant.configure("2") do |config|
       end
     end
   end
-
-
-  config.vm.define "pentest" do |box|
-    box.vm.box = "elrey741/kali-linux_amd64"
-    box.vm.network "private_network", ip: "192.168.56.200", netmask: "255.255.0.0", gateway: "192.168.56.1"
-    box.vm.hostname = "pentest"
-    box.vm.box_check_update = false
-
-    box.vm.provider "virtualbox" do |vb, override|
-      vb.gui = false
-      vb.memory = "2048"
-      vb.name = "ccpt_pentest"
-    end
-
-    box.vm.provider "hyperv" do |hv|
-      hv.vmname = "ccpt_pentest"
-      hv.cpus = 2
-      hv.enable_enhanced_session_mode = true 
-    end
-  end
+  
 
 end

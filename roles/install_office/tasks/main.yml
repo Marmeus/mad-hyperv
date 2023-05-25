@@ -1,0 +1,14 @@
+---
+  - name: Download Office 2016
+    win_shell: Invoke-WebRequest -UseBasicParsing -Uri 'https://c2rsetup.officeapps.live.com/c2r/download.aspx?ProductreleaseID=ProfessionalRetail&language=es-es&platform=x64&version=O16GA&act=1' -Outfile C:\\Users\\vagrant\\Downloads\\Office2016.exe
+
+  - name: Install Office 2016
+    win_command: "C:\\Users\\Vagrant\\Downloads\\Office2016.exe"
+
+  - name: Upload Office Activation Script
+    ansible.windows.win_copy:
+      src: "files/activate_office.bat"
+      dest: "C:\\Users\\vagrant\\Downloads\\activate_office.bat"
+
+  - name: Activate Office
+    win_command: "C:\\Users\\vagrant\\Downloads\\activate_office.bat"

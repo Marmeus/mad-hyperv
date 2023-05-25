@@ -4,13 +4,13 @@ Please, read the whole installation process carefully. It is not entirely a copy
 
 ## 1. Enable Hyper-V feature
 
-To enable Hyper-V on your Windows System, go to `Control Panel\Programs\Turn Windows features on or off\`, and then look for "Hyper-V".
+To enable Hyper-V with some extra features, execute the following commands.
 
-![image-20230331180017528](Images/image-20230331180017528.png)
-
-> :warning: If you are using VBox, after enabling Hyper-V you might experience some problems running your VBox machines. So, to solve this problem, you need to enable the feature "Virtual Machines".
->
-> ![image-20230331180047904](Images/image-20230331180047904.png)
+```powershell
+Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V-All
+Enable-WindowsOptionalFeature -Online -FeatureName HypervisorPlatform
+Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform
+```
 
 ## 2. Install & Configure WSL
 
@@ -132,18 +132,20 @@ ROOT=C:\widhcp\wwwroot
 
 Now, install and start the DHCP server executing the file `dhcpsrv.exe`  as Administrator.
 
+> :warning: Once completed the installation process, I recommend you stop and remove the DHCP server because it can mess with the interface NATSwitch leading to odd behaviors.
+
 ![image-20230331184309937](Images/image-20230331184309937.png)
 
 Then, download the repository on `C:\`, so it can be accessed pretty easily through Ubuntu WSL
 
 Finally, once the server is running, open your Ubuntu WSL  as an Administrator, and execute the following command and wait for it to finish. After that, you can stop and remove the DHCP server.
 
+> :information_source: There is no need to install all the virtual machines, but if you want to use the AD environment, at least you must install "kms" and "goku, reboot the machines, and then install the other AD machine you want to use.
+
 ```bash
 cd /mnt/c/capsulecorp-ad-pentest-hyperv/
-vagrant up goku krillin raditz gohan pentest --provision
+vagrant up kms development kali goku krillin raditz gohan tien --provision
 ```
-
-> :warning: If you want to perform `dist-upgrade` or `upgrade` on the Kali (pentest) machine, it might break the enhanced hyper-v session or even brake the GUI, so to recover those features, there is a script at `/home/auditor/install_xrdp.sh`, that you only need to do `chmod +x install_xrdp.sh; sudo ./install_xrdp.sh; sudo reboot` in order to fix everything, hopefully :sweat_smile:.
 
 # Uninstall
 
@@ -152,7 +154,7 @@ In case you are tired of this lab environment or you are having problems with Vi
 1. On your Ubuntu WSL, executed as Administrator. 
 
 ```bash
-vagrant destroy goku krillin raditz gohan pentest -f
+vagrant destroy kms development kali goku krillin raditz gohan tien -f
 rm -rf /mnt/c/capsulecorp-pentest-hyperv/
 ```
 
@@ -163,10 +165,18 @@ Remove-VMSwitch -SwitchName "NATSwitch" -Force
 Remove-NetNat -Confirm:$false -Name "NATNetwork"
 ```
 
-3. Disable Hyper-V on "Turn Windows features on or off" or through a PowerShell as Administrator.
+3. Disable Hyper-V startup through a PowerShell as Administrator.
 
 > If you want to enable it again, change `off` to `auto`.
 ```powershell
+# To Turn it off
 bcdedit /set hypervisorlaunchtype off
+
+# To uninstall it completely
+Disable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V-All
+Disable-WindowsOptionalFeature -Online -FeatureName HypervisorPlatform
+Disable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform
 ```
+
+
 

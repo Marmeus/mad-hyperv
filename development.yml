@@ -4,45 +4,79 @@
   vars:
     ansible_winrm_transport: plaintext
     ansible_winrm_scheme: http
-    ethernet_adapter: "Ethernet"
+    ethernet_adapter: "Ethernet 2"
     host_ip: "192.168.56.3"
   roles:
-  - role: windows_ip
   - role: disable_rtm
-  tasks:
-  - include_tasks: "./roles/activate_windows/tasks/windows_wks.yml"
-
-  - name: Development | Download Visual Studio Code Zip
-    win_shell: Invoke-WebRequest -Uri "https://code.visualstudio.com/sha/download?build=stable&os=win32-x64-archive" -OutFile C:\\Users\\vagrant\\Downloads\\VSCodex64.zip
-
-  - name: Development | Unzip Visual Studio Code Zip
-    community.windows.win_unzip:
-      src: C:\\Users\\vagrant\\Downloads\\VSCodex64.zip
-      dest: C:\Users\vagrant\AppData\Local\Programs\MicrosoftVSCode\
+  - role: activate_windows_wks
+  - role: windows_ip
+  # - role: hacking_tools
   
-  - name: Development | Add Code to PATH
-    win_shell: setx PATH {{'"'}}$($env:path);C:\Users\vagrant\AppData\Local\Programs\MicrosoftVSCode\{{'"'}}
+  tasks:
+  - name: DEVELOPMENT | Ensure user Auditor is present
+    ansible.windows.win_user:
+      name: auditor
+      password: PassW0rd
+      state: present
+      home_directory: C:\Users\auditor
+      account_disabled: false
+      groups:
+        - Users
+        - Remote Desktop Users
+        - Administrators
 
-  - name:  Development | Create Code shortcut
-    community.windows.win_shortcut:
-      src: C:\Users\vagrant\AppData\Local\Programs\MicrosoftVSCode\Code.exe
-      dest: C:\Users\vagrant\Desktop\Code.lnk
-      icon: C:\Users\vagrant\AppData\Local\Programs\MicrosoftVSCode\Code.exe,0
+  - name: DEVELOPMENT | Ensure Auditor profile is present
+    community.windows.win_user_profile:
+      username: auditor
+      state: present
 
-  - name:  Development | Create Code shortcut
+  - name: "DEVELOPMENT | Create kshare script"
+    win_copy:
+      dest: C:\Users\auditor\Desktop\kshare.bat
+      content: |
+        net use Z: /delete
+        net use Z: \\192.168.56.4\visualstudio '' /user:''
+
+  - name: "DEVELOPMENT | Create README.txt"
+    win_copy:
+      dest: C:\Users\auditor\Desktop\README.txt
+      content: |
+        Take into account that that Real-Time protection and Tamper protection are enabled, so disable them before trying to download any kind of software that can be considered as malware on the machine.
+
+  - name: DEVELOPMENT | Download Visual Studio Code Zip
+    win_shell: Invoke-WebRequest -Uri "https://code.visualstudio.com/sha/download?build=stable&os=win32-x64-archive" -OutFile C:\\Users\\auditor\\Downloads\\VSCodex64.zip
+
+  - name: DEVELOPMENT | Unzip Visual Studio Code Zip
+    community.windows.win_unzip:
+      src: C:\\Users\\auditor\\Downloads\\VSCodex64.zip
+      dest: C:\Users\auditor\Documents\MicrosoftVSCode\
+  
+  # - name: DEVELOPMENT | Add Code to PATH
+  #   win_shell: setx PATH {{'"'}}$($env:path);C:\Users\vagrant\AppData\Local\Programs\MicrosoftVSCode\{{'"'}}
+
+  - name:  DEVELOPMENT | Create Code shortcut
     community.windows.win_shortcut:
-      src: C:\Users\vagrant\AppData\Local\Programs\MicrosoftVSCode\Code.exe
+      src: C:\Users\auditor\Documents\MicrosoftVSCode\Code.exe
+      dest: C:\Users\auditor\Desktop\Code.lnk
+      icon: C:\Users\auditor\Documents\MicrosoftVSCode\Code.exe,0
+
+  - name:  DEVELOPMENT | Add Code to Start Menu
+    community.windows.win_shortcut:
+      src: C:\Users\auditor\Documents\MicrosoftVSCode\Code.exe
       dest: C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Code.lnk
-      icon: C:\Users\vagrant\AppData\Local\Programs\MicrosoftVSCode\Code.exe,0
+      icon: C:\Users\auditor\Documents\MicrosoftVSCode\Code.exe,0
     
-  - name: Development | Download Visual Studio Installer
-    win_shell: Invoke-WebRequest -Uri https://aka.ms/vs/17/release/vs_community.exe -OutFile C:\\Users\\vagrant\\Downloads\\vs_community.exe
+  - name: DEVELOPMENT | Download Visual Studio Installer
+    win_shell: Invoke-WebRequest -Uri https://aka.ms/vs/17/release/vs_community.exe -OutFile C:\\Users\\auditor\\Downloads\\vs_community.exe
 
-  - name: Development | Install Windows Studio (Do not worry, it takes a lot...)
-    win_shell: C:\\Users\\vagrant\\Downloads\\vs_community.exe --includeRecommended --wait --quiet --add Microsoft.VisualStudio.Workload.ManagedDesktop
 
-  - name:  Development | Create Visua Studio shortcut
+  - name: DEVELOPMENT | Install Windows Studio (Do not worry, it takes a lot...)
+    win_shell: C:\\Users\\auditor\\Downloads\\vs_community.exe --includeRecommended --wait --quiet --add Microsoft.VisualStudio.Workload.ManagedDesktop
+    async: 1500
+    poll: 60
+
+  - name:  DEVELOPMENT | Create Visual Studio shortcut
     community.windows.win_shortcut:
       src: C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe
-      dest: C:\Users\vagrant\Desktop\VSCode.lnk
+      dest: C:\Users\auditor\Desktop\VSCode.lnk
       icon: C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe,0

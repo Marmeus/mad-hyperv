@@ -7,27 +7,15 @@
     ansible_winrm_transport: plaintext
     ansible_winrm_scheme: http
     host_ip: "192.168.56.5"
-  tasks:
-  - include_tasks: "./roles/activate_windows/tasks/windows_wks.yml"
-  
-  - name: Fix host static IP after reboot
-    community.windows.win_scheduled_task:
-      name: TaskName2
-      description: open command prompt
-      actions:
-      - path: cmd
-        arguments: /c netsh interface ipv4 set address name="Ethernet" static {{host_ip}} 255.255.255.0 192.168.56.1
-      triggers:
-      - type: boot
-      username: SYSTEM
-      state: present
-      enabled: yes
-
-  - name: Activate windows
-    win_shell: cscript slmgr.vbs /rearm
-    args:
-      chdir: C:\Windows\System32\
+    ethernet_adapter: "Ethernet"
+  # tasks:
+  # - name: Activate windows
+  #   win_shell: cscript slmgr.vbs /rearm
+  #   args:
+  #     chdir: C:\Windows\System32\
     
   roles:
     - role: disable_rtm
     - role: promotedc
+    - role: windows_ip
+    - role: activate_windows_srv

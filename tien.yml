@@ -1,0 +1,53 @@
+---
+- hosts: tien
+  gather_facts: True
+  vars:
+    ansible_winrm_transport: plaintext
+    ansible_winrm_scheme: http
+    ethernet_adapter: "Ethernet 2"
+    host_ip: "192.168.56.9"
+  roles:
+  - role: disable_rtm
+  - role: activate_windows_wks
+  - role: install_office
+  - role: joindomain
+
+  tasks:
+  - name: TIEN | Install AD WindowsCapability
+    win_shell: Add-WindowsCapability -Online -Name 'Rsat.ActiveDirectory.DS-LDS.Tools~~~~0.0.1.0'
+    vars:
+      ansible_become: yes
+      ansible_become_method: runas
+      ansible_become_user: "vagrant"
+      ansible_become_password: "vagrant"
+
+  - name: TIEN | Grant employee1 Local Administrator membership
+    ansible.windows.win_group_membership:
+      name: Administrators
+      state: present
+      members:
+        - employee1@capsulecorp
+
+  - name: TIEN | Ensure user1 profile is present
+    community.windows.win_user_profile:
+      username:  employee1@capsulecorp
+      state: present
+
+  - name: "TIEN | Create README.txt"
+    win_copy:
+      dest: C:\Users\employee1\Desktop\README.txt
+      content: |
+        Take into account that that Real-Time protection and Tamper protection are enabled, so disable them before trying to download any kind of software that can be considered as malware on the machine.
+
+  - name: TIEN | Fix host static IP after reboot
+    community.windows.win_scheduled_task:
+      name: TaskName2
+      description: open command prompt
+      actions:
+      - path: cmd
+        arguments: /c netsh interface ipv4 set address name="{{ ethernet_adapter }}" static {{host_ip}} 255.255.255.0 192.168.56.1 && netsh interface ipv4 set dns name="{{ ethernet_adapter }}" static 192.168.56.5
+      triggers:
+      - type: boot
+      username: SYSTEM
+      state: present
+      enabled: yes

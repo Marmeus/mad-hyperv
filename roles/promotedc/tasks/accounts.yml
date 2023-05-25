@@ -46,3 +46,12 @@
       state: present
       groups:
         - Domain Admins
+
+  - name: ACCOUNTS | Ensure AD account User1 exists
+    community.windows.win_domain_user:
+      name: employee1
+      firstname: employee1
+      password: PassW0rd!
+      state: present
+      groups:
+        - Domain Users

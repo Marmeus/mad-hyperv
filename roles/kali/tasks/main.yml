@@ -1,4 +1,13 @@
 ---
+  - name: Kali | Create user auditor
+    shell: useradd -m auditor; usermod -aG adm,dialout,cdrom,floppy,sudo,audio,dip,video,plugdev,netdev,wireshark,bluetooth,scanner,kaboxer,docker auditor; chsh -s /bin/bash auditor
+
+  - name: Kali | Change auditor password
+    ansible.builtin.user:
+      name: "auditor"
+      state: present
+      password: "$6$LbY1vAN9zLT1RUNA$CEe2wmcCx3r/mmq/96LgGXvK3vCQjFzT0RUjSZDOuetXwmJV01UPv4n0xoI0JJuGukxE6KC0F2kCNzfWazSyG0"
+
   - name: Kali | Updated apt keys
     shell: wget --no-check-certificate https://http.kali.org/kali/pool/main/k/kali-archive-keyring/kali-archive-keyring_2022.1_all.deb -O /tmp/keyring_2022.deb; apt install -f /tmp/keyring_2022.deb
 
@@ -16,14 +25,39 @@
     ansible.builtin.apt:
       name: remmina
 
-  - name: Kali | Create user auditor
-    shell: useradd -m auditor; usermod -aG adm,dialout,cdrom,floppy,sudo,audio,dip,video,plugdev,netdev,wireshark,bluetooth,scanner,kaboxer,docker auditor; chsh -s /bin/bash auditor
+  - name: Kali | Install "Apache2" package
+    ansible.builtin.apt:
+      name: apache2
 
-  - name: Kali | Change auditor password
-    ansible.builtin.user:
-      name: "auditor"
-      state: present
-      password: "$6$LbY1vAN9zLT1RUNA$CEe2wmcCx3r/mmq/96LgGXvK3vCQjFzT0RUjSZDOuetXwmJV01UPv4n0xoI0JJuGukxE6KC0F2kCNzfWazSyG0"
+  - name: Kali | Update /var/www/htlm privileges
+    ansible.builtin.file:
+      path: /var/www/html
+      group: auditor
+      mode: u=rwx,g=rwx,o=r
+
+  - name: Kali | Start service Apache2
+    ansible.builtin.service:
+      name: apache2
+      state: started
+      enabled: yes
+
+  - name: Kali | Install "samba" package
+    ansible.builtin.apt:
+      name: samba
+
+  - name: Kali | Backup samba config file
+    shell: cp /etc/samba/smb.conf /etc/samba/smb.conf.bak
+
+  - name: Kali | Update samba config file
+    template:
+      src: "files/smb.conf"
+      dest: "/etc/samba/smb.conf"
+
+  - name: Kali | Start service Samba
+    ansible.builtin.service:
+      name: smbd
+      state: started
+      enabled: yes
 
   # - name: Kali | Upload xorg.conf to avoid errors during system upgrade Connection 1
   #   template:

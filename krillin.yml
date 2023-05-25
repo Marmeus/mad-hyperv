@@ -6,12 +6,17 @@
     ansible_winrm_scheme: http
     capsulecorp_domain_hostname: "krillin"
     ethernet_adapter: "Ethernet"
-    anpt_flag: "flag3.txt"
     host_ip: "192.168.56.6"
+  roles:
+    - role: disable_rtm
+    - role: activate_windows_srv
+    - role: joindomain
+    - role: vulnerable_service
+    - role: install_office
+    - role: windows_ip
+    - role: hacking_tools
   tasks:
-  - include_tasks: "./roles/activate_windows/tasks/windows_wks.yml"
-
-  - name: Ensure user Auditor is present
+  - name: KRILLIN | Ensure user Auditor is present
     ansible.windows.win_user:
       name: auditor
       password: PassW0rd
@@ -20,7 +25,7 @@
         - Users
         - Remote Desktop Users
 
-  - name: Set SeShutdownPrivilege to User
+  - name: KRILLIN | Set SeShutdownPrivilege to User
     win_shell: .\Set-UserRights.ps1 -AddRight -Username auditor -UserRight SeShutdownPrivilege
     args:
       chdir: c:\setup\
@@ -30,33 +35,9 @@
       ansible_become_user: "vagrant"
       ansible_become_password: "vagrant"
 
-  - name: SSMS | Become sql_svc a Local Administrator 
+  - name: KRILLIN | Become sql_svc a Local Administrator 
     ansible.windows.win_group_membership:
       name: Administrators
       state: present
       members:
         - capsulecorp\vuln_svc
-
-  - name: Fix host static IP after reboot
-    community.windows.win_scheduled_task:
-      name: TaskName2
-      description: open command prompt
-      actions:
-      - path: cmd
-        arguments: /c netsh interface ipv4 set address name="Ethernet" static {{host_ip}} 255.255.255.0 192.168.56.1
-      triggers:
-      - type: boot
-      username: SYSTEM
-      state: present
-      enabled: yes
-
-  - name: Activate windows
-    win_shell: cscript slmgr.vbs /rearm
-    args:
-      chdir: C:\Windows\System32\
-
-  roles:
-    - role: disable_rtm
-    - role: joindomain
-    - role: vulnerable_service
-    - role: hacking_tools

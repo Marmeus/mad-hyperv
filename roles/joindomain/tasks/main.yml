@@ -17,6 +17,7 @@
 
 - name: Install ActiveDirectory Module
   win_shell: "Add-WindowsFeature RSAT-AD-PowerShell"
+  ignore_errors: true
 
 - name: Join the capsulecorp.local domain
   win_domain_membership:

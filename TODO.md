@@ -14,7 +14,7 @@
 - name: Windows | Add the fr keyboard layout
   win_shell: $langList = Get-WinUserLanguageList; $langList.Add("es-ES"); Set-WinUserLanguageList -LanguageList $langList -Force
 ```
-- [ ] Activate Windows permanently
+- [X] Activate Windows permanently
 ```bash
 # Windows Server 2022 Evaluation
 dism /online /set-edition:ServerStandard /productkey:VDYBN-27WPP-V4HQT-9VMD4-VMK7H /accepteula /NoRestart
@@ -64,11 +64,19 @@ cscript //nologo c:\windows\system32\slmgr.vbs /ato
 - [X] Allow Non Admin users to restart the machine
 - [X] Make vuln_svc sysadmin at MSSQL service
 - [ ] Install clamAV
-
-# Goku - DC
-
-- [ ] Install [py-kms](https://github.com/SystemRage/py-kms)
-  - [ ] Install Python 2.7
+- [X] Upload [Office2016](https://c2rsetup.officeapps.live.com/c2r/download.aspx?ProductreleaseID=ProfessionalRetail&language=es-es&platform=x64&token=NKGG6-WBPCC-HXWMY-6DQGJ-CPQVG&version=O16GA&act=1)
+- [X] Activate Office With KMS
+```bash
+cd "C:\Program Files\Microsoft Office\Office16"
+for /f %x in ('dir /b ..\root\Licenses16\ProPlus2019VL*.xrm-ms') do cscript ospp.vbs /inslic:"..\root\Licenses16\%x"
+cscript.exe .\OSPP.VBS /sethst:192.168.56.2
+cscript.exe .\OSPP.VBS /act
+```
+- [ ] Change from Windows Server To Workstation
+```powershell
+Get-WindowsCapability -Name RSAT* -Online
+Add-WindowsCapability -Online -Name 'Rsat.ActiveDirectory.DS-LDS.Tools~~~~0.0.1.0'
+```
 
 # Kali machine
 - [X] Create a kali machine for Hyper-V
@@ -76,14 +84,35 @@ cscript //nologo c:\windows\system32\slmgr.vbs /ato
 - [X] Fix sources.list keys
 - [X] Fix error to install packages without upgrading the machine
 - [X] Install Tools
+- [X] Install apache2
+- [X] Install samba server
+
+```bash
+[visualstudio]
+path = /var/www/html/data
+browseable = yes
+read only = no
+writeable = yes
+guest ok = yes
+public = yes
+force user = auditor
+```
 
 # Development Workstation
 - [X] Activate KMS
+- [X] Add Samba Script
+```powershell
+ echo net use Z: /delete > kshare.bat && echo net use Z: \\192.168.56.4\visualstudio '' /user:'' >> kshare.bat
+```
 - [X] Install Visual Studio Code
-- [ ] Install Visual Studio
+- [X] Install Visual Studio
 
 
 # KMS Server
 - [X] Install virtual machine
 - [X] Install docker
 - [X] Install https://github.com/SystemRage/py-kms
+
+# Tien
+
+- [x]  Install Offiice

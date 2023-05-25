@@ -2,7 +2,7 @@
 # https://blog.51sec.org/2023/01/how-to-upgrade-windows-10-evaluation.html
   - name: Upload Windows Workstation Activation File
     ansible.windows.win_copy:
-      src: "../files/skus-Windows-10.zip"
+      src: "files/skus-Windows-10.zip"
       dest: "C:\\Users\\vagrant\\Downloads\\skus-Windows-10.zip"
   
   - name: Unzip Activation File
@@ -12,7 +12,7 @@
 
   - name: Upload Windows Activation Script
     ansible.windows.win_copy:
-      src: "../files/activate_wks.bat"
+      src: "files/activate_wks.bat"
       dest: "C:\\Users\\vagrant\\Downloads\\activate_wks.bat" 
 
   - name: Execute Windows Activation Script
