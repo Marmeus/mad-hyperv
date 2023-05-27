@@ -6,6 +6,7 @@
     ansible_winrm_scheme: http
     ethernet_adapter: "Ethernet 2"
     host_ip: "192.168.56.9"
+    dns_server: "192.168.56.5"
   roles:
   - role: disable_rtm
   - role: activate_windows_wks
@@ -21,12 +22,12 @@
       ansible_become_user: "vagrant"
       ansible_become_password: "vagrant"
 
-  - name: TIEN | Grant employee1 Local Administrator membership
+  - name: TIEN | Become employee1 a Local Administrator 
     ansible.windows.win_group_membership:
       name: Administrators
       state: present
       members:
-        - employee1@capsulecorp
+        - capsulecorp\employee1
 
   - name: TIEN | Ensure user1 profile is present
     community.windows.win_user_profile:

@@ -5,14 +5,19 @@
     ansible_winrm_transport: plaintext
     ansible_winrm_scheme: http
     ethernet_adapter: "Ethernet 2"
+    dns_server: "1.1.1.1"
     host_ip: "192.168.56.3"
   roles:
   - role: disable_rtm
   - role: activate_windows_wks
+  - role: install_office
   - role: windows_ip
   # - role: hacking_tools
   
   tasks:
+  - name: DEVELOPMENT | Change DNS server
+    win_shell: netsh interface ipv4 set dns name="{{ ethernet_adapter }}" static 192.168.56.
+
   - name: DEVELOPMENT | Ensure user Auditor is present
     ansible.windows.win_user:
       name: auditor

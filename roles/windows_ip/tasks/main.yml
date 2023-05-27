@@ -5,9 +5,17 @@
       description: open command prompt
       actions:
       - path: cmd
-        arguments: /c netsh interface ipv4 set address name="{{ ethernet_adapter }}" static {{host_ip}} 255.255.255.0 192.168.56.1 && netsh interface ipv4 set dns name="{{ ethernet_adapter }}" static 1.1.1.1
+        arguments: /c netsh interface ipv4 set address name="{{ ethernet_adapter }}" static {{host_ip}} 255.255.255.0 192.168.56.1
       triggers:
       - type: boot
       username: SYSTEM
       state: present
       enabled: yes
+
+  - name: Change DNS
+    win_dns_client:
+      adapter_names: "{{ ethernet_adapter }}"
+      ipv4_addresses:
+        - "{{ dns_server }}"
+        - 1.1.1.1
+    register: dns_setup

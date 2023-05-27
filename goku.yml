@@ -7,6 +7,7 @@
     ansible_winrm_transport: plaintext
     ansible_winrm_scheme: http
     host_ip: "192.168.56.5"
+    dns_server: "127.0.0.1"
     ethernet_adapter: "Ethernet"
   # tasks:
   # - name: Activate windows
