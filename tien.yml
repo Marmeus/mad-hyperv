@@ -12,6 +12,7 @@
   - role: activate_windows_wks
   - role: install_office
   - role: joindomain
+  - role: windows_ip
 
   tasks:
   - name: TIEN | Install AD WindowsCapability
@@ -39,16 +40,3 @@
       dest: C:\Users\employee1\Desktop\README.txt
       content: |
         Take into account that that Real-Time protection and Tamper protection are enabled, so disable them before trying to download any kind of software that can be considered as malware on the machine.
-
-  - name: TIEN | Fix host static IP after reboot
-    community.windows.win_scheduled_task:
-      name: TaskName2
-      description: open command prompt
-      actions:
-      - path: cmd
-        arguments: /c netsh interface ipv4 set address name="{{ ethernet_adapter }}" static {{host_ip}} 255.255.255.0 192.168.56.1 && netsh interface ipv4 set dns name="{{ ethernet_adapter }}" static 192.168.56.5
-      triggers:
-      - type: boot
-      username: SYSTEM
-      state: present
-      enabled: yes

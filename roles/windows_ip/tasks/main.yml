@@ -16,6 +16,6 @@
     win_dns_client:
       adapter_names: "{{ ethernet_adapter }}"
       ipv4_addresses:
-        - "{{ dns_server }}"
+        - "{{dns_server}}"
         - 1.1.1.1
     register: dns_setup

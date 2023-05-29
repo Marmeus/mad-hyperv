@@ -156,6 +156,7 @@ In case you are tired of this lab environment or you are having problems with Vi
 ```bash
 vagrant destroy kms development kali goku krillin raditz gohan tien -f
 rm -rf /mnt/c/capsulecorp-pentest-hyperv/
+ vagrant box list | cut -d ' ' -f 1 | xargs -I {} bash -c "vagrant box remove -f {}"
 ```
 
 2. On PowerShell as Administrator
