@@ -13,6 +13,8 @@
   - role: install_office
   - role: joindomain
   - role: windows_ip
+  - role: disable_vagrant_user
+  - role: local_admin_password
 
   tasks:
   - name: TIEN | Install AD WindowsCapability
@@ -35,8 +37,9 @@
       username:  employee1@capsulecorp
       state: present
 
-  - name: "TIEN | Create README.txt"
+  - name: TIEN | Create README.txt
     win_copy:
       dest: C:\Users\employee1\Desktop\README.txt
       content: |
         Take into account that that Real-Time protection and Tamper protection are enabled, so disable them before trying to download any kind of software that can be considered as malware on the machine.
+      

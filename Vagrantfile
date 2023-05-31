@@ -7,7 +7,7 @@
 # you're doing.
 Vagrant.configure("2") do |config|
   
-  config.vm.network "public_network", bridge: "NATSwitch"
+  # config.vm.network "public_network", bridge: "NATSwitch"
   
   config.vm.synced_folder '.', '/vagrant', disabled: true
 

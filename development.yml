@@ -12,6 +12,8 @@
   - role: activate_windows_wks
   - role: install_office
   - role: windows_ip
+  - role: disable_vagrant_user
+  - role: local_admin_password
   # - role: hacking_tools
   
   tasks:

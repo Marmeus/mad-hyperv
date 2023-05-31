@@ -14,3 +14,4 @@
    - role: joindomain
    - role: unconstrained_delegation
    - role: windows_ip
+   - role: local_admin_password

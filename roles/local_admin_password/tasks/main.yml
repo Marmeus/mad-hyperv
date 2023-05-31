@@ -1,0 +1,6 @@
+---
+  - name: Change Local Admin Password
+    ansible.windows.win_user:
+      name: "Administrator"
+      password: "PassW0rd!"
+      account_disabled: no

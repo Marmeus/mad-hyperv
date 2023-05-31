@@ -1,0 +1,13 @@
+---
+  - name: Disable vagrant user
+    community.windows.win_scheduled_task:
+      name: Disable vagrant user
+      description: open command prompt
+      actions:
+      - path: cmd
+        arguments: /c net user vagrant /active:no
+      triggers:
+      - type: boot
+      username: SYSTEM
+      state: present
+      enabled: yes

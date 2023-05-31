@@ -15,6 +15,7 @@
     - role: install_office
     - role: windows_ip
     - role: hacking_tools
+    - role: local_admin_password
   tasks:
   - name: KRILLIN | Ensure user Auditor is present
     ansible.windows.win_user:

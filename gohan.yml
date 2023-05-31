@@ -13,3 +13,4 @@
     - role: joindomain
     - role: mssql
     - role: windows_ip
+    - role: local_admin_password

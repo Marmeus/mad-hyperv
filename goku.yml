@@ -20,3 +20,4 @@
     - role: promotedc
     - role: windows_ip
     - role: activate_windows_srv
+    - role: local_admin_password
