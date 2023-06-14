@@ -16,7 +16,7 @@ Nowadays, there is no free platform where you can interact with a vulnerable Act
 
 ![Consumed Resources](Images/image-20230331183121508.png)
 
-Plus, the performance is quite impressive for Linux and Windows systems.
+Plus, the performance is quite impressive for Linux and Windows systems, giving the same ammount of CPU cores and RAM.
 
 ### Linux
 
