@@ -16,7 +16,8 @@ Vagrant.configure("2") do |config|
   #winsrv = "StefanScherer/windows_2019"
   winsrv = "gusztavvargadr/windows-server"
   winwstn = "StefanScherer/windows_10"
-  kali = "elrey741/kali-linux_amd64"
+  kali_old = "elrey741/kali-linux_amd64"
+  kali2023 = "marmeus/kali-2023-hyperv"
   ubuntu22 = "generic/ubuntu2204"
 
   # Types of connection
@@ -29,7 +30,8 @@ Vagrant.configure("2") do |config|
          {name: "krillin", ip: "0.0.0.0", box: winsrv, communicator:com_win},
          {name: "raditz", ip: "0.0.0.0", box: winsrv, communicator:com_win},
 	       {name: "gohan", ip: "0.0.0.0", box: winsrv, communicator:com_win},
-         {name: "kali", ip: "0.0.0.0", box: kali, communicator:com_linux},
+         {name: "kali", ip: "0.0.0.0", box: kali2023, communicator:com_linux},
+         {name: "kaliold", ip: "0.0.0.0", box: kali_old, communicator:com_linux},
          {name: "development", ip: "0.0.0.0", box: winwstn, communicator:com_win},
          {name: "vegeta", ip: "0.0.0.0", box: winsrv, communicator:com_win},
          {name: "trunks", ip: "0.0.0.0", box: winsrv, communicator:com_win},
@@ -46,6 +48,9 @@ Vagrant.configure("2") do |config|
       box.winrm.transport = :plaintext
       box.winrm.basic_auth_only = true
       box.vm.communicator = vm[:communicator]
+      # box.ssh.username= "vagrant"
+      # box.ssh.password= "vagrant"
+      # box.ssh.insert_key = false
       # box.vm.network "public_network", ip: "192.168.56.2", netmask: "24", gateway: "192.168.56.1"
       # box.vm.network "public_network", ip: vm[:ip], bridge: "NATSwitch",:mac => "00155DB001DD"
       box.vm.network "public_network", :bridge => 'NATSwitch'
@@ -58,7 +63,7 @@ Vagrant.configure("2") do |config|
       end
 
       box.vm.provision "ansible" do |ansible| 
-        ansible.playbook = "#{vm[:name]}.yml"
+        ansible.playbook = "ansible/#{vm[:name]}.yml"
       end
     end
   end

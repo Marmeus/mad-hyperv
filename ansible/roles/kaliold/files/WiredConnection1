@@ -1,0 +1,24 @@
+[connection]
+id=Wired connection 1
+uuid=4dacaab6-a5ef-4679-85da-1f80534d9a4f
+type=ethernet
+interface-name=eth0
+permissions=
+timestamp=1637563273
+
+[ethernet]
+mac-address-blacklist=
+
+[ipv4]
+address1=192.168.56.4/24,192.168.56.1
+dns=1.1.1.1;
+dns-search=
+method=manual
+
+[ipv6]
+addr-gen-mode=eui64
+dns-search=
+ip6-privacy=2
+method=auto
+
+[proxy]

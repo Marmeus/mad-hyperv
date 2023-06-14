@@ -1,0 +1,6 @@
+---
+- hosts: kaliold
+  become: true
+  gather_facts: True
+  roles:
+    - role: kaliold

@@ -1,20 +1,18 @@
 ---
+  - name: Kali | Xhosts access control disabled
+    shell: echo "xhost +" | tee -a /etc/profile
+
   - name: Kali | Create user auditor
-    shell: useradd -m auditor; usermod -aG adm,dialout,cdrom,floppy,sudo,audio,dip,video,plugdev,netdev,wireshark,bluetooth,scanner,kaboxer,docker auditor; chsh -s /bin/bash auditor
+    shell: useradd -m auditor; usermod -aG adm,dialout,cdrom,floppy,sudo,audio,dip,video,plugdev,netdev,wireshark,bluetooth,scanner,kaboxer auditor; chsh -s /bin/bash auditor
+
+  - name: Kali | Make auditor a sudoers without password
+    shell: echo "auditor ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/auditor
 
   - name: Kali | Change auditor password
     ansible.builtin.user:
       name: "auditor"
       state: present
       password: "$6$LbY1vAN9zLT1RUNA$CEe2wmcCx3r/mmq/96LgGXvK3vCQjFzT0RUjSZDOuetXwmJV01UPv4n0xoI0JJuGukxE6KC0F2kCNzfWazSyG0"
-
-  - name: Kali | Updated apt keys
-    shell: wget --no-check-certificate https://http.kali.org/kali/pool/main/k/kali-archive-keyring/kali-archive-keyring_2022.1_all.deb -O /tmp/keyring_2022.deb; apt install -f /tmp/keyring_2022.deb
-
-  - name: Kali | Remove "binutils" to avoid error dependencies
-    ansible.builtin.apt:
-      name: binutils
-      state: absent
 
   - name: Kali | Install "python3-impacket" package
     ansible.builtin.apt:
@@ -58,16 +56,6 @@
       name: smbd
       state: started
       enabled: yes
-
-  # - name: Kali | Upload xorg.conf to avoid errors during system upgrade Connection 1
-  #   template:
-  #     src: "files/xorg.conf"
-  #     dest: "/etc/X11/xorg.conf.d/xorg.conf"
-
-  - name: Kali | Upload install_xrdp.sh to execute after Kali dist-upgrade
-    template:
-      src: "files/install_xrdp.sh"
-      dest: "/home/auditor/install_xrdp.sh"
 
   - name: Kali | Upload Interfaces
     template:
