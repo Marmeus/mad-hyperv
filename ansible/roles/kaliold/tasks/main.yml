@@ -2,6 +2,9 @@
   - name: Kali | Create user auditor
     shell: useradd -m auditor; usermod -aG adm,dialout,cdrom,floppy,sudo,audio,dip,video,plugdev,netdev,wireshark,bluetooth,scanner,kaboxer auditor; chsh -s /bin/bash auditor
   
+  - name: Kali | Xhosts access control disabled
+    shell: echo "xhost +" | tee -a /etc/profile
+
   - name: Kali | Change auditor password
     ansible.builtin.user:
       name: "auditor"
