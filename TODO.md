@@ -22,7 +22,7 @@
 dism /online /set-edition:ServerStandard /productkey:VDYBN-27WPP-V4HQT-9VMD4-VMK7H /accepteula /NoRestart
 cscript //nologo c:\windows\system32\slmgr.vbs /upk
 cscript //nologo c:\windows\system32\slmgr.vbs /ipk VDYBN-27WPP-V4HQT-9VMD4-VMK7H
-cscript //nologo c:\windows\system32\slmgr.vbs /skms 192.168.56.6:1688
+cscript //nologo c:\windows\system32\slmgr.vbs /skms 10.10.10.6:1688
 cscript //nologo c:\windows\system32\slmgr.vbs /ato
 
 # Windows 10 Enterprise Evaluation
@@ -38,7 +38,7 @@ sc config wuauserv start= auto & net start wuauserv
 clipup -v -o -altto c:\
 echo
 cscript //nologo c:\windows\system32\slmgr.vbs /ipk M7XTQ-FN8P6-TTKYV-9D4CC-J462D
-cscript //nologo c:\windows\system32\slmgr.vbs /skms 192.168.56.6:1688
+cscript //nologo c:\windows\system32\slmgr.vbs /skms 10.10.10.6:1688
 cscript //nologo c:\windows\system32\slmgr.vbs /ato
 ```
 
@@ -70,7 +70,7 @@ cscript //nologo c:\windows\system32\slmgr.vbs /ato
 ```bash
 cd "C:\Program Files\Microsoft Office\Office16"
 for /f %x in ('dir /b ..\root\Licenses16\ProPlus2019VL*.xrm-ms') do cscript ospp.vbs /inslic:"..\root\Licenses16\%x"
-cscript.exe .\OSPP.VBS /sethst:192.168.56.2
+cscript.exe .\OSPP.VBS /sethst:10.10.10.2
 cscript.exe .\OSPP.VBS /act
 ```
 - [ ] Change from Windows Server To Workstation
@@ -106,7 +106,7 @@ force user = auditor
 - [X] Activate KMS
 - [X] Add Samba Script
 ```powershell
- echo net use Z: /delete > kshare.bat && echo net use Z: \\192.168.56.4\visualstudio '' /user:'' >> kshare.bat
+ echo net use Z: /delete > kshare.bat && echo net use Z: \\10.10.10.4\visualstudio '' /user:'' >> kshare.bat
 ```
 - [X] Install Visual Studio Code
 - [X] Install Visual Studio

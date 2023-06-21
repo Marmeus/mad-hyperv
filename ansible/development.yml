@@ -5,7 +5,7 @@
     ansible_winrm_transport: plaintext
     ansible_winrm_scheme: http
     ethernet_adapter: "Ethernet 2"
-    host_ip: "192.168.56.3"
+    host_ip: "10.10.10.3"
     dns_server: "8.8.8.8"
   roles:
   - role: disable_rtm
@@ -39,7 +39,7 @@
       dest: C:\Users\auditor\Desktop\kshare.bat
       content: |
         net use Z: /delete
-        net use Z: \\192.168.56.4\visualstudio '' /user:''
+        net use Z: \\10.10.10.4\visualstudio '' /user:''
 
   - name: DEVELOPMENT | Allow Insecure SMB Guest Auth
     ansible.windows.win_regedit:
@@ -82,9 +82,10 @@
 
 
   - name: DEVELOPMENT | Install Windows Studio (Do not worry, it takes a lot...)
-    win_shell: C:\\Users\\auditor\\Downloads\\vs_community.exe --includeRecommended --wait --quiet --add Microsoft.VisualStudio.Workload.ManagedDesktop
+    win_shell: C:\\Users\\auditor\\Downloads\\vs_community.exe --includeRecommended --norestart --wait --quiet --add Microsoft.VisualStudio.Workload.ManagedDesktop
     async: 1500
     poll: 60
+    register: install_windows_studio
 
   - name:  DEVELOPMENT | Create Visual Studio shortcut
     community.windows.win_shortcut:

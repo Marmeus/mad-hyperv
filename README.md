@@ -34,17 +34,17 @@ Plus, the performance is quite impressive for Linux and Windows systems, giving 
 
 If you install the whole lab environment you will encounter 8 machines each one created for a different purpose:
 
-- **KMS** (192.168.56.2): KMS server used to activate the Windows Workstations, Windows Servers and Microsoft Office.
-- **Development** (192.168.56.3): A Windows Workstation (Not in the domain) with Visual Studio y Visual Studio Code in order to develop software for C2.
-- **Kali** (192.168.56.4): Kali machine with Samba and Apache to store and deliver the software created on the development machine.
+- **KMS** (10.10.10.2): KMS server used to activate the Windows Workstations, Windows Servers and Microsoft Office.
+- **Development** (10.10.10.3): A Windows Workstation (Not in the domain) with Visual Studio y Visual Studio Code in order to develop software for C2.
+- **Kali** (10.10.10.4): Kali machine with Samba and Apache to store and deliver the software created on the development machine.
 
 > :warning: If you want to perform `dist-upgrade` or `upgrade` on the Kali (pentest) machine, it might break the enhanced hyper-v session or even brake the GUI, so to recover those features, there is a script at `/home/auditor/install_xrdp.sh`, that you only need to do `chmod +x install_xrdp.sh; sudo ./install_xrdp.sh; sudo reboot` in order to fix everything, hopefully. :sweat_smile:
 
-- **Goku** (192.168.56.5): Domain Controller with several vulnerabilities from [vulnerable-AD-plus](https://github.com/WaterExecution/vulnerable-AD-plus).
-- **Krillin** (192.168.56.6): Windows Server with Microsoft Office and a vulnerable service to escalate privileges and move laterally. This is the starting point of the hacking lab as the user "auditor".
-- **Raditz** (192.168.56.7): Windows Server with an ISS Web Server vulnerable to Unconstrained delegation.
-- **Gohan** (192.168.56.8): Windows Server with an MSSQL Server Vulnerable to Constrained Delegation.
-- **Tein** (192.168.56.9): A Windows Workstation in the domain with Office to perform phishing attacks or enumerate the domain.
+- **Goku** (10.10.10.5): Domain Controller with several vulnerabilities from [vulnerable-AD-plus](https://github.com/WaterExecution/vulnerable-AD-plus).
+- **Krillin** (10.10.10.6): Windows Server with Microsoft Office and a vulnerable service to escalate privileges and move laterally. This is the starting point of the hacking lab as the user "auditor".
+- **Raditz** (10.10.10.7): Windows Server with an ISS Web Server vulnerable to Unconstrained delegation.
+- **Gohan** (10.10.10.8): Windows Server with an MSSQL Server Vulnerable to Constrained Delegation.
+- **Tein** (10.10.10.9): A Windows Workstation in the domain with Office to perform phishing attacks or enumerate the domain.
 
 In each machine, there are some users in order to access the machine through Remote Desktop except KMS which is through SSH.
 

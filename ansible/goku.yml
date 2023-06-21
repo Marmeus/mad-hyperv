@@ -6,7 +6,7 @@
     domain_Name: capsulecorp.local
     ansible_winrm_transport: plaintext
     ansible_winrm_scheme: http
-    host_ip: "192.168.56.5"
+    host_ip: "10.10.10.5"
     dns_server: "127.0.0.1"
     ethernet_adapter: "Ethernet"
   # tasks:
@@ -20,4 +20,3 @@
     - role: promotedc
     - role: windows_ip
     - role: activate_windows_srv
-    - role: local_admin_password

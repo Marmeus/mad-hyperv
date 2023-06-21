@@ -84,9 +84,9 @@ Execute the following command on PowerShell as Administrator.
 ```powershell
 New-VMSwitch -SwitchName "NATSwitch" -SwitchType Internal
 
-New-NetIPAddress -IPAddress 192.168.56.1 -PrefixLength 24 -InterfaceAlias "vEthernet (NATSwitch)" 
+New-NetIPAddress -IPAddress 10.10.10.1 -PrefixLength 24 -InterfaceAlias "vEthernet (NATSwitch)" 
 
-New-NetNAT -Name "NATNetwork" -InternalIPInterfaceAddressPrefix 192.168.56.0/24
+New-NetNAT -Name "NATNetwork" -InternalIPInterfaceAddressPrefix 10.10.10.0/24
 ```
 
 Then, you will need to set up a DHCP server, so the machines can obtain an IP on the same network you created earlier. This only will be necessary for the installation process, then you can uninstall the DHCP server.
@@ -101,8 +101,8 @@ Once you have completed the process executing `dhcpwiz.exe` , replace the conten
 
 ```bash
 [SETTINGS]
-IPPOOL_1=192.168.56.1-254
-IPBIND_1=192.168.56.1
+IPPOOL_1=10.10.10.1-254
+IPBIND_1=10.10.10.1
 AssociateBindsToPools=1
 Trace=1
 DeleteOnRelease=0
@@ -112,9 +112,9 @@ ExpiredLeaseTimeout=3600
 LEASETIME=86400
 NODETYPE=8
 SUBNETMASK=255.255.255.0
-NEXTSERVER=192.168.56.1
+NEXTSERVER=10.10.10.1
 DNS_0=1.1.1.1
-ROUTER_0=192.168.56.1
+ROUTER_0=10.10.10.1
 
 [DNS-SETTINGS]
 EnableDNS=0

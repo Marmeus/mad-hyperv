@@ -51,7 +51,7 @@ Vagrant.configure("2") do |config|
       # box.ssh.username= "vagrant"
       # box.ssh.password= "vagrant"
       # box.ssh.insert_key = false
-      # box.vm.network "public_network", ip: "192.168.56.2", netmask: "24", gateway: "192.168.56.1"
+      # box.vm.network "public_network", ip: "10.10.10.2", netmask: "24", gateway: "10.10.10.1"
       # box.vm.network "public_network", ip: vm[:ip], bridge: "NATSwitch",:mac => "00155DB001DD"
       box.vm.network "public_network", :bridge => 'NATSwitch'
 

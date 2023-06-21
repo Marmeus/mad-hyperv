@@ -8,5 +8,5 @@ sc config wuauserv start= auto & net start wuauserv
 clipup -v -o -altto c:\
 echo
 cscript //nologo c:\windows\system32\slmgr.vbs /ipk M7XTQ-FN8P6-TTKYV-9D4CC-J462D
-cscript //nologo c:\windows\system32\slmgr.vbs /skms 192.168.56.2:1688
+cscript //nologo c:\windows\system32\slmgr.vbs /skms 10.10.10.2:1688
 cscript //nologo c:\windows\system32\slmgr.vbs /ato

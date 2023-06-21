@@ -5,7 +5,7 @@
       description: open command prompt
       actions:
       - path: cmd
-        arguments: /c netsh interface ipv4 set address name="{{ ethernet_adapter }}" static {{host_ip}} 255.255.255.0 192.168.56.1
+        arguments: /c netsh interface ipv4 set address name="{{ ethernet_adapter }}" static {{host_ip}} 255.255.255.0 10.10.10.1
       triggers:
       - type: boot
       username: SYSTEM
