@@ -1,7 +1,7 @@
 [connection]
 id=Wired connection 1
 type=ethernet
-autoconnect-priority=-999
+autoconnect-priority=999
 interface-name=eth0
 
 [ethernet]
