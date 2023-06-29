@@ -14,5 +14,5 @@ allow-hotplug  eth0
 Inface eth0 inet static
         address 10.10.10.4
         netmask 255.255.255.0
-        broadcast 192.255.255.255
+        broadcast 10.255.255.255
         Gateway 10.10.10.1
