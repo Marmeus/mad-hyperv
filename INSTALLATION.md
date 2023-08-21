@@ -19,7 +19,7 @@ Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform
 Configure the WSL to version 1, so it uses the bridge Internace, instead of NAT in v2. For doing so, execute the following command on Powershell as Administrator.
 
 ```powershell
-wsl --set-default 1
+wsl --set-version 1
 ```
 
 Then, install the Ubuntu WSL.
