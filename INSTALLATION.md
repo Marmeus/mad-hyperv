@@ -142,7 +142,7 @@ cd /mnt/c/capsulecorp-ad-pentest-hyperv/
 vagrant up kms development kali goku krillin raditz gohan tien --provision
 ```
 
-Finally, you need to set the `EnhancedSessionTransportType` on each machine to take advantage of Hyper-V clipboard capabilities. To do so, execute the following commands.
+Finally, you need to set the `EnhancedSessionTransportType` on each machine to take advantage of Hyper-V clipboard capabilities. To do so, execute the following commands on PowerShell as Administrato.
 
 ```powershell
 Set-VM -VMName ccpt_kms,ccpt_kali -EnhancedSessionTransportType HvSocket
