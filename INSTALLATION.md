@@ -133,13 +133,20 @@ Now, install and start the DHCP server executing the file `dhcpsrv.exe`  as Admi
 
 Then, download the repository on `C:\`, so it can be accessed pretty easily through Ubuntu WSL
 
-Finally, once the server is running, open your Ubuntu WSL  as an Administrator, and execute the following command and wait for it to finish. After that, you can stop and remove the DHCP server.
+Once the server is running, open your Ubuntu WSL  as an Administrator, and execute the following command and wait for it to finish. After that, you can stop and remove the DHCP server.
 
 > :information_source: There is no need to install all the virtual machines, but if you want to use the AD environment, at least you must install "kms" and "goku, reboot the machines, and then install the other AD machine you want to use.
 
 ```bash
 cd /mnt/c/capsulecorp-ad-pentest-hyperv/
 vagrant up kms development kali goku krillin raditz gohan tien --provision
+```
+
+Finally, you need to set the `EnhancedSessionTransportType` on each machine to take advantage of Hyper-V clipboard capabilities. To do so, execute the following commands.
+
+```powershell
+Set-VM -VMName ccpt_kms,ccpt_kali -EnhancedSessionTransportType HvSocket
+Set-VM -VMName ccpt_development,ccpt_goku,ccpt_krillin,ccpt_raditz,ccpt_gohan,ccpt_tien -EnhancedSessionTransportType VMBus
 ```
 
 # Uninstall

@@ -9,8 +9,8 @@
 - [X] Disable Real Time monitoring in all the machines
   - [X] Disable cloud-delivered protection
   - [X] Disable sample submissio
-- [ ] Fix enhanced session on Windows Machines
-- [ ] Move all machines.yml to `ansible` also `roles`.
+- [x] Fix enhanced session on Windows Machines
+- [x] Move all machines.yml to `ansible` also `roles`.
 - [ ] Install spanish keyboard
 ```yml
 - name: Windows | Add the fr keyboard layout
