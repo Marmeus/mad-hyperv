@@ -120,3 +120,22 @@ force user = auditor
 # Tien
 
 - [x]  Install Offiice
+
+# Network Inspector
+
+Networks structure:
+
+```mermaid
+graph LR
+A[Windows] -->B[Ubuntu] <-->C(Internet)<-->D[Kali]
+```
+
+Ubuntu Machine with:
+
+- dnsmasq
+- Nginx
+- Snort
+
+Windows machine with RDP
+
+- It is possible to RDP to the Windows machine, by performing local port forwarding using SSH through the Ubuntu machine
