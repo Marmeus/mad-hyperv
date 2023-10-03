@@ -41,13 +41,14 @@ cscript //nologo c:\windows\system32\slmgr.vbs /ipk M7XTQ-FN8P6-TTKYV-9D4CC-J462
 cscript //nologo c:\windows\system32\slmgr.vbs /skms 10.10.10.6:1688
 cscript //nologo c:\windows\system32\slmgr.vbs /ato
 ```
+- [ ]  Add LAPS to the network
 
 # Raditz - Unconstrained Delegation
 - [X] Unconstrained delegation (HTTP-> RADITZ)
   - [X]  Add scheduled tasks to perform a web request from gohan  to raditz -> It doesnt matter if you use SpoolSample 
     - [X] Mount a web site with domain authentication [web](https://blog.xpnsec.com/kerberos-attacks-part-1/)
     - [ ] Resolve odd behaviour: When a user authenticates againts the machinethe user's ticket doesn't appear on the unconstrained machine
-    - [ ] Probar a eliminar el win_feature "web-server" del main de raditz.
+    - [ ] Try to delete win_feature "web-server" from raditz.
 
 # Gohan - Constrained Delegation
 - [X] Constrained delegation (MSSL -> DC)
