@@ -68,7 +68,7 @@ vagrant:vagrant
 auditor:PassW0rd
 ```
 
-- Goku:
+- **Goku**:
 
 ```bash
 # Domain Admin
