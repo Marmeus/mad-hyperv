@@ -53,6 +53,8 @@ Then, execute the command `Restart-Service LxssManager` within an elevated Power
 
 To install Vagrant, you need to execute the following commands:
 
+> :information_source: It is required the vagrant version **2.4.1**
+
 ```bash
 echo 'export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"' >> ~/.bashrc
 echo 'export VAGRANT_DEFAULT_PROVIDER=hyperv' >> ~/.bashrc
@@ -70,66 +72,7 @@ vagrant plugin install winrm-fs
 vagrant plugin install winrm-elevated
 ```
 
-## 3. Setting up the AD environment 
-
-Because Hyper-V doesn't provide tools to create internal networks as can be done with VirtualBox or VMWare. Hence, you need to create a virtual Switch and set an IP address to the new network adapter.
-
-Execute the following command on PowerShell as Administrator.
-
-```powershell
-New-VMSwitch -SwitchName "NATSwitch" -SwitchType Internal
-
-New-NetIPAddress -IPAddress 10.10.10.1 -PrefixLength 24 -InterfaceAlias "vEthernet (NATSwitch)" 
-
-New-NetNAT -Name "NATNetwork" -InternalIPInterfaceAddressPrefix 10.10.10.0/24
-```
-
-Then, you will need to set up a DHCP server, so the machines can obtain an IP on the same network you created earlier. This only will be necessary for the installation process, then you can uninstall the DHCP server.
-
-> :information_source: If you tried setting a static IP with Vagrant, at the moment of the writing of this document, Vagrant and Hyper-V do not get on well with network stuff. Hyper-V ignores almost any network configuration you add to a vagrant file.
-
-The DHCP server I used for setting up the lab is from www.dhcpserver.de, a very intuitive and easy to set up. Follow the installation process as appears on this [link](https://www.dhcpserver.de/cms/running_the_server/).
-
-> :information_source: Download it on `C:\widhcp` and do not forget to configure the firewall exceptions.
-
-Once you have completed the process executing `dhcpwiz.exe` , replace the content of the file `dhcpsrv.ini` with the following content.
-
-```bash
-[SETTINGS]
-IPPOOL_1=10.10.10.1-254
-IPBIND_1=10.10.10.1
-AssociateBindsToPools=1
-Trace=1
-DeleteOnRelease=0
-ExpiredLeaseTimeout=3600
-
-[GENERAL]
-LEASETIME=86400
-NODETYPE=8
-SUBNETMASK=255.255.255.0
-NEXTSERVER=10.10.10.1
-DNS_0=1.1.1.1
-ROUTER_0=10.10.10.1
-
-[DNS-SETTINGS]
-EnableDNS=0
-FORWARD=1.1.1.1
-
-[TFTP-SETTINGS]
-EnableTFTP=0
-ROOT=C:\widhcp\wwwroot
-WritePermission=0
-
-[HTTP-SETTINGS]
-EnableHTTP=1
-ROOT=C:\widhcp\wwwroot
-```
-
-Now, install and start the DHCP server executing the file `dhcpsrv.exe`  as Administrator.
-
-> :warning: Once completed the installation process, I recommend you stop and remove the DHCP server because it can mess with the interface NATSwitch leading to odd behaviors.
-
-![image-20230331184309937](Images/image-20230331184309937.png)
+# Laboratory
 
 Then, download the repository on `C:\`, so it can be accessed pretty easily through Ubuntu WSL
 
@@ -158,17 +101,10 @@ In case you are tired of this lab environment or you are having problems with Vi
 ```bash
 vagrant destroy kms development kali goku krillin raditz gohan tien -f
 rm -rf /mnt/c/capsulecorp-pentest-hyperv/
- vagrant box list | cut -d ' ' -f 1 | xargs -I {} bash -c "vagrant box remove -f {}"
+vagrant box list | cut -d ' ' -f 1 | xargs -I {} bash -c "vagrant box remove -f {}"
 ```
 
-2. On PowerShell as Administrator
-
-```powershell
-Remove-VMSwitch -SwitchName "NATSwitch" -Force
-Remove-NetNat -Confirm:$false -Name "NATNetwork"
-```
-
-3. Disable Hyper-V startup through a PowerShell as Administrator.
+2. Disable Hyper-V startup through a PowerShell as Administrator.
 
 > If you want to enable it again, change `off` to `auto`.
 ```powershell

@@ -62,7 +62,7 @@
   - name: Kali | Upload Wired Connection 1
     template:
       src: "files/WiredConnection1"
-      dest: "/etc/NetworkManager/system-connections/Wired\ connection\ 1"
+      dest: "/etc/NetworkManager/system-connections/Wired\ connection\ 1.nmconnection"
 
   - name: Kali | Reboot the machine
     reboot:
