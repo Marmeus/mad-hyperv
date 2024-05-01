@@ -3,6 +3,19 @@
 # General
 - [X] Static IPs
 - [ ] Create a config.json with all the repited data like domain admin credentials
+- [ ]  Add LAPS to the network
+- [ ] Install spanish keyboard
+```yml
+- name: Windows | Add the fr keyboard layout
+  win_shell: $langList = Get-WinUserLanguageList; $langList.Add("es-ES"); Set-WinUserLanguageList -LanguageList $langList -Force
+```
+- [ ] Enable Insecure guest logons
+```bash
+1. Go to DC/Group Polocicy Management/Forest/Domains/<DOMAIN>/Group Policy Objects/Default Domain Policy
+2. Right Click/Edit
+3. Go to Cinoyter Configuration/Policies/Administrative Templates/Network/Lanman Workstation
+4. Enable "Enable insecure guest logons"
+```
 - [X] Install Vuln-AD-plus -> The problem was on the script :D
   - [ ] Script Output into a file
   - [ ] Make it into a .yml filey
@@ -11,11 +24,7 @@
   - [X] Disable sample submissio
 - [x] Fix enhanced session on Windows Machines
 - [x] Move all machines.yml to `ansible` also `roles`.
-- [ ] Install spanish keyboard
-```yml
-- name: Windows | Add the fr keyboard layout
-  win_shell: $langList = Get-WinUserLanguageList; $langList.Add("es-ES"); Set-WinUserLanguageList -LanguageList $langList -Force
-```
+
 - [X] Activate Windows permanently
 ```bash
 # Windows Server 2022 Evaluation
@@ -41,7 +50,7 @@ cscript //nologo c:\windows\system32\slmgr.vbs /ipk M7XTQ-FN8P6-TTKYV-9D4CC-J462
 cscript //nologo c:\windows\system32\slmgr.vbs /skms 10.10.10.6:1688
 cscript //nologo c:\windows\system32\slmgr.vbs /ato
 ```
-- [ ]  Add LAPS to the network
+
 
 # Raditz - Unconstrained Delegation
 - [X] Unconstrained delegation (HTTP-> RADITZ)

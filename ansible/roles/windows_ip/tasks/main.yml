@@ -1,7 +1,7 @@
 ---
   - name: Fix host static IP after reboot
     community.windows.win_scheduled_task:
-      name: TaskName2
+      name: Set static
       description: open command prompt
       actions:
       - path: cmd
