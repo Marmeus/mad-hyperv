@@ -17,3 +17,4 @@
 
   - name: Execute Windows Activation Script
     win_command: "C:\\Users\\vagrant\\Downloads\\activate_wks.bat"
+    ignore_errors: yes
