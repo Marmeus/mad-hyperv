@@ -35,14 +35,14 @@ Vagrant.configure("2") do |config|
   com_linux = "ssh"
 
   # VM configuration (IPs do not work for Hyper-V environments)
-  vms = [{name: "kms", ip: "10.10.10.2", interface_name: "eth0", box: ubuntu22, communicator:com_linux},
-         {name: "development", ip: "10.10.10.3", interface_name: "Ethernet 2", box: winwstn, communicator:com_win},
-         {name: "kali", ip: "10.10.10.4", interface_name: "eth0", box: kali2023, communicator:com_linux},
-         {name: "goku", ip: "10.10.10.5", interface_name: "Ethernet", box: winsrv, communicator:com_win},
-         {name: "krillin", ip: "10.10.10.6", interface_name: "Ethernet", box: winsrv, communicator:com_win},
-         {name: "raditz", ip: "10.10.10.7", interface_name: "Ethernet", box: winsrv, communicator:com_win},
-	       {name: "gohan", ip: "10.10.10.8", interface_name: "Ethernet", box: winsrv, communicator:com_win},
-         {name: "tien", ip: "10.10.10.9", interface_name: "Ethernet 2", box: winwstn, communicator:com_win}
+  vms = [{name: "kms", ip: "10.10.10.2", interface_name: "eth0", box: ubuntu22, communicator:com_linux, cpu:1, ram:1024},
+         {name: "development", ip: "10.10.10.3", interface_name: "Ethernet 2", box: winwstn, communicator:com_win, cpu:2, ram:2048},
+         {name: "kali", ip: "10.10.10.4", interface_name: "eth0", box: kali2023, communicator:com_linux, cpu:1, ram:2048},
+         {name: "goku", ip: "10.10.10.5", interface_name: "Ethernet", box: winsrv, communicator:com_win, cpu:2, ram:2048},
+         {name: "krillin", ip: "10.10.10.6", interface_name: "Ethernet", box: winsrv, communicator:com_win, cpu:1, ram:1024},
+         {name: "raditz", ip: "10.10.10.7", interface_name: "Ethernet", box: winsrv, communicator:com_win, cpu:1, ram:1024},
+	       {name: "gohan", ip: "10.10.10.8", interface_name: "Ethernet", box: winsrv, communicator:com_win, cpu:1, ram:1024},
+         {name: "tien", ip: "10.10.10.9", interface_name: "Ethernet 2", box: winwstn, communicator:com_win, cpu:1, ram:1024}
         ]
 
   vms.each do |vm|
@@ -58,8 +58,8 @@ Vagrant.configure("2") do |config|
 
       box.vm.provider "hyperv" do |hv|
         hv.vmname = "mad_#{vm[:name]}"
-        hv.cpus = 2
-        hv.memory = "2048"
+        hv.cpus = vm[:cpu]
+        hv.memory = vm[:ram]
         hv.enable_enhanced_session_mode = true 
       end
 

@@ -53,7 +53,7 @@ Then, execute the command `Restart-Service LxssManager` within an elevated Power
 
 To install Vagrant, you need to execute the following commands:
 
-> :information_source: It is required the vagrant version **2.4.1**
+> :warning: It is required the vagrant version **2.4.1**
 
 ```bash
 echo 'export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"' >> ~/.bashrc
@@ -76,7 +76,7 @@ vagrant plugin install winrm-elevated
 
 Then, download the repository on `C:\`, so it can be accessed pretty easily through Ubuntu WSL
 
-Once the server is running, open your Ubuntu WSL  as an Administrator, and execute the following command and wait for it to finish. After that, you can stop and remove the DHCP server.
+Once the server is running, open your Ubuntu WSL  as an Administrator, and execute the following command and wait for it to finish.
 
 > :information_source: There is no need to install all the virtual machines, but if you want to use the AD environment, at least you must install "kms" and "goku, reboot the machines, and then install the other AD machine you want to use.
 
