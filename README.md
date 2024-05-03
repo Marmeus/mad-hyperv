@@ -3,9 +3,9 @@
 > Ping me if you need help setting up the environment or adding new features.
 
 
-# 1. Capsulecorp AD Pentest (Hyper-v)
+# 1. Malicious Active Directoy Pentest (Hyper-v)
 
-The Capsulecorp AD Pentest is a small virtual network created using Vagrant and Ansible on Hyper-V. It contains several Windows machines configured with various vulnerabilities, a Windows Development machine, a Kali machine, and a KMS server. This project can be used to learn network [Active Directory penetration testing](https://the-pentesting-guide.marmeus.com/?q=Active+Directory)  (I have created [a small AD hacking path](./WRITEUP.md)), test C2 programs, and develop software for future Active Directory Audits or bypass AVs.
+The Malicious Active Directoy Pentest is a small virtual network created using Vagrant and Ansible on Hyper-V. It contains several Windows machines configured with various vulnerabilities, a Windows Development machine, a Kali machine, and a KMS server. This project can be used to learn network [Active Directory penetration testing](https://the-pentesting-guide.marmeus.com/?q=Active+Directory)  (I have created [a small AD hacking path](./WRITEUP.md)), test C2 programs, and develop software for future Active Directory Audits or bypass AVs.
 
 This project took inspiration from [Royce](https://twitter.com/r3dy__)'s repo [capsulecorp-pentest](https://github.com/R3dy/capsulecorp-pentest) and wanted to adapt it to an Active Directory environment using the power of Windows Hyper-V.
 
