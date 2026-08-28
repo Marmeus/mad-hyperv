@@ -67,21 +67,36 @@ Vagrant.configure("2") do |config|
       box.trigger.before :reload do |trigger|
         trigger.info = "Static IP configuration ready"
         trigger.run = {privileged: "true", inline: "powershell.exe -ep bypass -File scripts/static-ip-set.ps1 mad_#{vm[:name]}"}
-      end
 
-      box.trigger.after :"VagrantPlugins::HyperV::Action::Configure", type: :action do |trigger|
-        trigger.info = "If Static IP set force VM to use NATSwitch switch"
+        trigger.info = "IP set force VM to use NATSwitch switch"
         trigger.run = {privileged: "true", inline: "powershell.exe -ep bypass -File scripts/set-hyperv-switch.ps1 mad_#{vm[:name]}"}
       end
 
-      if box.vm.communicator == com_win
-        box.vm.provision "shell", path: "./scripts/configure-static-ip.ps1", args: ["#{vm[:ip]}", "#{vm[:interface_name]}"]
+      if box.vm.communicator == com_win && vm[:name] != "goku"
+        box.vm.provision "shell", path: "./scripts/configure-static-ip.ps1", args: ["#{vm[:ip]}", "#{vm[:interface_name]}", "10.10.10.5"]
+      elsif box.vm.communicator == com_win && vm[:name] == "goku"
+        box.vm.provision "shell", path: "./scripts/configure-static-ip.ps1", args: ["#{vm[:ip]}", "#{vm[:interface_name]}", "1.1.1.1"]
       elsif box.vm.communicator == "ssh" && box.vm.box == ubuntu22
         box.vm.provision "shell", path: "./scripts/configure-static-ip-ubuntu.sh", args: ["#{vm[:ip]}"]
       else
         box.vm.provision "shell", path: "./scripts/configure-static-ip-kali.sh", args: ["#{vm[:ip]}"]
       end
-      box.vm.provision :reload
+      
+      box.trigger.after :provision do |trigger|
+        if box.vm.communicator == com_win
+          trigger.info = "Rebooting the Windows machine after configuration"
+          trigger.run = {privileged: "true", inline: "shutdown -r -t 0"}
+        else
+          trigger.info = "Rebooting the Linux machine after configuration"
+          trigger.run = {privileged: "true", inline: "sudo reboot"}
+        end
+      
+        trigger.info = "Waiting for the machine to reboot..."
+        trigger.run = {inline: "sleep 90"}
+      
+        trigger.info = "Updating Vagrant"
+        trigger.run = {inline: "vagrant reload"}
+      end
 
       box.vm.provision "ansible" do |ansible| 
         ansible.compatibility_mode = "2.0"
@@ -89,6 +104,4 @@ Vagrant.configure("2") do |config|
       end
     end
   end
-  
-
 end

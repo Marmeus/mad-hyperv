@@ -27,7 +27,10 @@
 
   - name: Reboot server after domain install
     win_reboot:
-      test_command: 'exit (Get-Service -Name LanmanServer).Status -ne "Running"'
+      reboot_timeout: 0
+    ignore_errors: yes
+    async: 1
+    poll: 0
     when: domain_create.reboot_required
   
   - name: Wait for domain controller to be ready

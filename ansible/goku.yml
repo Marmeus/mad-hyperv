@@ -9,6 +9,7 @@
     host_ip: "10.10.10.5"
     dns_server: "127.0.0.1"
     ethernet_adapter: "Ethernet"
+    vm_name: mad_goku
   # tasks:
   # - name: Activate windows
   #   win_shell: cscript slmgr.vbs /rearm

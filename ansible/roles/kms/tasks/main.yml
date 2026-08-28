@@ -15,6 +15,6 @@
       src: "files/00-installer-config.yaml"
       dest: "/etc/netplan/00-installer-config.yaml"
 
-  - name: KMS | Reboot the machine
-    reboot:
-      reboot_timeout: 100
+  #- name: KMS | Reboot the machine
+  #  reboot:
+  #    reboot_timeout: 100

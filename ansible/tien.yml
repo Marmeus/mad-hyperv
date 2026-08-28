@@ -7,12 +7,14 @@
     ethernet_adapter: "Ethernet 2"
     host_ip: "10.10.10.9"
     dns_server: "10.10.10.5"
+    vm_name: mad_tien
+
   roles:
   - role: disable_rtm
+  - role: windows_ip
   - role: activate_windows_wks
   - role: install_office
   - role: joindomain
-  - role: windows_ip
   - role: disable_vagrant_user
   - role: local_admin_password
 

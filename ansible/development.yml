@@ -7,6 +7,8 @@
     ethernet_adapter: "Ethernet 2"
     host_ip: "10.10.10.3"
     dns_server: "8.8.8.8"
+    vm_name: mad_development
+
   roles:
   - role: disable_rtm
   - role: activate_windows_wks

@@ -7,10 +7,12 @@
     ethernet_adapter: "Ethernet"
     host_ip: "10.10.10.8"
     dns_server: "10.10.10.5"
+    vm_name: mad_gohan
+
   roles:
     - role: disable_rtm
+    - role: windows_ip
     - role: activate_windows_srv
     - role: joindomain
     - role: mssql
-    - role: windows_ip
     - role: local_admin_password

@@ -7,13 +7,15 @@
     ethernet_adapter: "Ethernet"
     host_ip: "10.10.10.6"
     dns_server: "10.10.10.5"
+    vm_name: mad_krillin
+
   roles:
     - role: disable_rtm
+    - role: windows_ip
     - role: activate_windows_srv
     - role: joindomain
     - role: vulnerable_service
     - role: install_office
-    - role: windows_ip
     - role: hacking_tools
     - role: local_admin_password
   tasks:

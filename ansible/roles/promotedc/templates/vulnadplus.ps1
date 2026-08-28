@@ -553,7 +553,82 @@ function VulnAD-PublicSMBShare {
 
 function VulnAD-FirewallOff {
 	netsh advfirewall set allprofiles state off
-} 
+}
+
+function VulnAD-ADCS {
+    # Parámetros de configuración
+    $CAName = "VulnerableCA"
+    $TemplateName = "VulnTemplate"
+    $DomainAdminGroup = "Domain Admins"
+
+    # Importar módulo ADCS si no está disponible
+    if (-not (Get-Module -Name ActiveDirectory -ListAvailable)) {
+        Install-WindowsFeature -Name RSAT-AD-Tools
+        Import-Module ActiveDirectory
+    }
+
+    # Crear una nueva CA si no existe
+    if (-not (Get-ADObject -Filter "Name -eq '$CAName'" -SearchBase "CN=Certification Authorities,CN=Public Key Services,CN=Services,CN=Configuration,DC=contoso,DC=local")) {
+        Install-AdcsCertificationAuthority -CAType EnterpriseRootCA -CACommonName $CAName -KeyLength 2048 -HashAlgorithm SHA1 -Force
+    }
+
+    # Configurar ADCS para hacerlo vulnerable
+    $RootCA = (Get-CertificationAuthority -Name $CAName)
+
+    # **ESC1: Plantilla vulnerable con Client Authentication**
+    New-CertificationAuthorityTemplate -Name $TemplateName -Subject "CN=VulnUser" -ValidityPeriod 5 -EnrollAuto -ClientAuth
+
+    # **ESC2: Inscripción de certificados sin autenticación**
+    Set-CertificationAuthorityProperty -Name $CAName -AllowUserSuppliedSubject True
+
+    # **ESC3: Delegación de control en plantillas**
+    $TemplateObject = Get-CertificationAuthorityTemplate -Name $TemplateName
+    $TemplateObject | Grant-ObjectACL -Principal "Authenticated Users" -Access Rights -Write
+
+    # **ESC4: Servicio de ADCS ejecutándose como SYSTEM**
+    Set-Service -Name CertSvc -StartupType Automatic
+    Start-Service -Name CertSvc
+
+    # **ESC5: Vulnerabilidad de inscripción basada en Web (Web Enrollment)**
+    Install-AdcsWebEnrollment -CACommonName $CAName -Force
+    Set-CertificationAuthorityProperty -Name $CAName -WebEnrollmentEnabled $true
+
+    # **ESC6: Habilitar inscripción de certificados de Administrador sin restricción**
+    $TemplateObject | Grant-ObjectACL -Principal "Domain Admins" -Access Enroll, Autoenroll
+
+    # **ESC7: Certificados sin validación de identidad**
+    Set-CertificationAuthorityProperty -Name $CAName -RequireStrongAuthentication $false
+
+    # **ESC8: Certificados con claves exportables**
+    $TemplateObject | Set-CertificationAuthorityTemplateProperty -Property KeyExportable -Value $true
+
+    # **ESC9: Uso de certificados en blanco**
+    $TemplateObject | Set-CertificationAuthorityTemplateProperty -Property AllowBlankSubject -Value $true
+
+    # **ESC10: Permitir plantillas heredadas inseguras**
+    Set-CertificationAuthorityProperty -Name $CAName -AllowLegacyTemplates $true
+
+    # **ESC11: Delegación en usuarios no administrativos**
+    $TemplateObject | Grant-ObjectACL -Principal "Domain Users" -Access Enroll
+
+    # **ESC12: Plantilla vulnerable con Server Authentication**
+    New-CertificationAuthorityTemplate -Name "VulnServerTemplate" -Subject "CN=CompromisedServer" -ValidityPeriod 5 -EnrollAuto -ServerAuth
+
+    # **ESC13: Permitir inscripción de certificados de usuario sin restricción**
+    Set-CertificationAuthorityProperty -Name $CAName -AllowUnrestrictedUserEnrollment $true
+
+    # **ESC14: No requerir auditoría en emisión de certificados**
+    Set-CertificationAuthorityProperty -Name $CAName -AuditRequired $false
+
+    # **ESC15: Permitir inscripción con credenciales comprometidas**
+    Set-CertificationAuthorityProperty -Name $CAName -AllowWeakCredentials $true
+
+    # Reiniciar servicios para aplicar cambios
+    Restart-Service CertSvc -Force
+
+    Write-Output "✅ ADCS configurado con vulnerabilidades desde ESC1 hasta ESC15"
+
+}
 
 function Invoke-VulnAD {
     Param(
@@ -601,4 +676,8 @@ function Invoke-VulnAD {
     Write-Good "Created Public SMB Share"
     VulnAD-FirewallOff
     Write-Good "Firewall Turned Off"
+    VulnAD-ADC
+    Write-Good "ADCS ESC1-15 vulnerabilities"
+   #Start-Process -Verb RunAs -FilePath 'C:\Windows\System32\cmd.exe' -ArgumentList "/C C:\ip.bat"
+   #Write-Good "Set Static IP Address to 10.10.10.5"
 }

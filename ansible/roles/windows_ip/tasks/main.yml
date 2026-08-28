@@ -19,3 +19,20 @@
         - "{{dns_server}}"
         - 1.1.1.1
     register: dns_setup
+
+  - name: Reboot server after change network configurations
+    win_shell: shutdown /r /t 0
+    async: 1
+    poll: 0
+    failed_when: false
+    when: dns_setup.changed
+
+  - name: Waiting 2 minutes for the machine bootup
+    pause:
+      minutes: 2
+
+  - name: Cambiar adaptador de red a NATSwitch en Hyper-V
+    ansible.builtin.shell: >
+      /mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -Command
+      "Connect-VMNetworkAdapter -VMName '{{ vm_name }}' -SwitchName 'NATSwitch'"
+    delegate_to: localhost

@@ -1,4 +1,8 @@
 ---
+  - name: Update the machine IP in the inventory
+    set_fact:
+      ansible_host: "{{host_ip}}"
+  
   - name: Upload Windows Activation Script
     ansible.windows.win_copy:
       src: "files/activate_srv.bat"

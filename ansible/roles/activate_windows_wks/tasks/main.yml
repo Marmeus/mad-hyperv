@@ -1,5 +1,9 @@
 ---
 # https://blog.51sec.org/2023/01/how-to-upgrade-windows-10-evaluation.html
+  - name: Update the machine IP in the inventory
+    set_fact:
+      ansible_host: "{{host_ip}}"
+
   - name: Upload Windows Workstation Activation File
     ansible.windows.win_copy:
       src: "files/skus-Windows-10.zip"
